@@ -1,0 +1,8 @@
+mockinitup:
+    docker exec -i backend_mysql_db_1 mysql -utest -Dtest -ptest < sql/up_001_init.sql
+
+mockseed:
+    docker exec -i backend_mysql_db_1 mysql -utest -Dtest -ptest < sql/mock.sql
+
+mockinitdown:
+    docker exec -i backend_mysql_db_1 mysql -utest -Dtest -ptest < sql/down_001_init.sql
