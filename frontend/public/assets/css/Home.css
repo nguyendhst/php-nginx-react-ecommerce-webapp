@@ -38,6 +38,12 @@ div {
    margin: 0;
    font-size: 26px;
 }
+#home-slider .content .btn {
+   color: #fff;
+   border-color: #fff;
+   font-size: 18px;
+   margin-top: 20px;
+}
 h1, h2, h3, h4, h5, h6 {
    font-family: "Gotham", Helvetica, Arial, sans-serif;
    color: #252a2b;

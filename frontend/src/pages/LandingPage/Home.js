@@ -10,7 +10,7 @@ function Home() {
             <div class="content">
 				<h3>Giải pháp sạc nhanh</h3>
 				<p>Sợi Kevlar | 1,8m | 20W</p>
-                <a class="btn" href="/products/cap-type-c-to-lightning-super-durable-sd-1">Shop Now </a> 
+				<a class="btn" href="">Shop Now </a>
 
 			</div>
      </div>

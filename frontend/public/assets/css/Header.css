@@ -20,21 +20,21 @@ header
 
 .background-header .logo,
 .background-header .main-nav .nav li a {
-  color: #1e1e1e!important;
+  color: #ffffff!important;
 }
 
 .background-header .main-nav .nav li:hover a {
-  color: #2a2a2a!important;
+  color: #ffffff!important;
 }
 
 .background-header .nav li a.active {
-  color: #2a2a2a!important;
+  color: #ffffff!important;
 }
 
 .header-area {
   border-bottom: 3px dotted rgb(0, 0, 0);
   box-shadow: none;
-  background-color: #fff;
+  background-color: rgb(0, 0, 0);
   position: absolute;
   top: 0px;
   left: 0px;
@@ -100,7 +100,7 @@ header
   display: block;
   font-weight: 600;
   font-size: 15px;
-  color: #2a2a2a;
+  color: #ffffff;
   text-transform: capitalize;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
@@ -113,7 +113,7 @@ header
 }
 
 .header-area .main-nav .nav li a {
-  color: #2a2a2a;
+  color: #ffffff;
 }
 
 .header-area .main-nav .nav li:hover a,
@@ -136,7 +136,7 @@ header
   font-family: FontAwesome;
   content: "\f107";
   font-size: 12px;
-  color: #2a2a2a;
+  color: #ffffff;
   position: absolute;
   right: 18px;
   top: 12px;
