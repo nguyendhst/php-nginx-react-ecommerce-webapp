@@ -1,21 +1,30 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-
-import NavBar from "./components/NavBar/NavBar";
-
-import LandingPage from "./pages/LandingPage/LandingPage";
-import ProductPage from "./pages/ProductPage/ProductPage";
-
+// import NavBar from "./components/NavBar/NavBar";
+import Home from "./pages/LandingPage/Home";
+import Header from "./Header";
+import Footer from "./Footer";
+// import LandingPage from "./pages/LandingPage/LandingPage";
+import PaginatedItems from "./pages/ProductPage/ProductPage";
+import SingleProduct from "./pages/ProductPage/SingleProduct";
 function App() {
   return (
+    
     <React.Fragment>
-      <NavBar />
+
 
       <main>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/product" element={<ProductPage />} />
-        </Routes>
+
+          <Header></Header>
+            <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<PaginatedItems />} />
+            <Route path="/single-product" element={<SingleProduct />} />
+
+
+            </Routes>
+            <Footer></Footer>
+
       </main>
     </React.Fragment>
   );
