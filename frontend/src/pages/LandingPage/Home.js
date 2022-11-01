@@ -78,12 +78,13 @@ function Home() {
 			
 			
 			<div class="home-category__item">
-				<a class="home-category__image" href="/collections/cu-sac">
+				<a class="home-category__image" href="/charge">
                     
 					<img src="assets/images/home_category_image_1.png" loading="lazy" alt="category"/>
+					
 					<span class="home-category__tag"></span>
 				</a>
-				<a class="home-category__title" href="/collections/cu-sac">
+				<a class="home-category__title" href="/charge">
 					Charger
 				</a>
 			</div>
@@ -97,11 +98,11 @@ function Home() {
 			
 			
 			<div class="home-category__item">
-				<a class="home-category__image" href="/collections/tai-nghe">
+				<a class="home-category__image" href="/TWS">
 					<img src="assets/images/home_category_image_2.png" loading="lazy" alt="category"/>
 					<span class="home-category__tag"></span>
 				</a>
-				<a class="home-category__title" href="/collections/tai-nghe">
+				<a class="home-category__title" href="/TWS">
 					TWS
 				</a>
 			</div>
@@ -115,11 +116,11 @@ function Home() {
 			
 			
 			<div class="home-category__item">
-				<a class="home-category__image" href="/collections/day-cap">
+				<a class="home-category__image" href="/Cable">
                 <img src="assets/images/home_category_image_3.png" loading="lazy" alt="category"/>
 					<span class="home-category__tag"></span>
 				</a>
-				<a class="home-category__title" href="/collections/day-cap">
+				<a class="home-category__title" href="/Cable">
 					Cable
 				</a>
 			</div>
@@ -133,11 +134,11 @@ function Home() {
 			
 			
 			<div class="home-category__item">
-				<a class="home-category__image" href="/collections/pin-du-phong">
+				<a class="home-category__image" href="/PowerBlank">
                 <img src="assets/images/home_category_image_4.png" loading="lazy" alt="category"/>
 					<span class="home-category__tag"></span>
 				</a>
-				<a class="home-category__title" href="/collections/pin-du-phong">
+				<a class="home-category__title" href="/PowerBlank">
 					Power Bank
 				</a>
 			</div>
@@ -151,11 +152,11 @@ function Home() {
 			
 			
 			<div class="home-category__item">
-				<a class="home-category__image" href="/collections/phu-kien-khac">
+				<a class="home-category__image" href="/LifeStyle">
                 <img src="assets/images/home_category_image_5.png" loading="lazy" alt="category"/>
 					<span class="home-category__tag"></span>
 				</a>
-				<a class="home-category__title" href="/collections/phu-kien-khac">
+				<a class="home-category__title" href="/LifeStyle">
 					Life Style
 				</a>
 			</div>
@@ -169,11 +170,11 @@ function Home() {
 			
 			
 			<div class="home-category__item">
-				<a class="home-category__image" href="/collections/phu-kien-khac">
+				<a class="home-category__image" href="/Other">
                 <img src="assets/images/home_category_image_6.png" loading="lazy" alt="category"/>
 					<span class="home-category__tag"></span>
 				</a>
-				<a class="home-category__title" href="/collections/phu-kien-khac">
+				<a class="home-category__title" href="/Other">
 					More
 				</a>
 			</div>
