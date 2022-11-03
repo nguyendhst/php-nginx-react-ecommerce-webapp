@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import Home from "./pages/LandingPage";
-import Header from "./components/Header";
+import Header from "./components/Navbar";
 import Footer from "./components/Footer";
 import Products from "./pages/ProductPage";
 import NotFound from "./pages/404";
