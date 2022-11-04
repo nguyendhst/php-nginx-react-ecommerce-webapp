@@ -42,7 +42,7 @@ import "./index.css";
 
 const Header = () => {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{backgroundSize: "0", backgroundColor: "#A92117"}}>
+    <Navbar collapseOnSelect expand="lg" className="bgcolor" variant="dark" >
     <Container>
       <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />

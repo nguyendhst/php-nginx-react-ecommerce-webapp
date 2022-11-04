@@ -1,0 +1,17 @@
+.home-category-wrapper div.row.row-cols-6 {
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
+div.category-item a p {
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .home-category-wrapper div.col {
+ 
+    width: 90px;
+    padding-left: 0;
+  }
+}
+  
