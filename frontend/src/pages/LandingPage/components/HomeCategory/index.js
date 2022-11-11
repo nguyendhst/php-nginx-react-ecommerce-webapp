@@ -64,12 +64,13 @@ class HomeCategory extends Component {
 class HomeCategoryItem extends Component {
   render() {
     return (
-      <div className="col">
+      <div className="col" align="center">
         <div className="category-item">
           <Link to={this.props.url}>
             <img src={this.props.image} alt="" width="80px"/>
             <p>{this.props.category}</p>
           </Link>
+          
         </div>
       </div>
     );

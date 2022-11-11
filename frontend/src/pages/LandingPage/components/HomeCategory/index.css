@@ -3,8 +3,23 @@
   white-space: nowrap;
 }
 
+div.category-item {
+  width: 80px;
+}
 div.category-item a p {
   text-align: center;
+}
+
+div.category-item a {
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+  color: #000;
+}
+div.category-item a img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media screen and (max-width: 768px) {
