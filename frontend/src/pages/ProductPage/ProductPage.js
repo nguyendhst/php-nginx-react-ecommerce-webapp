@@ -3,7 +3,7 @@
 import React,{useState} from "react";
 import { render } from "react-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import{Link, useNavigate}from "react-router-dom";
 
 
 
@@ -14,7 +14,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 
 class Democomponent extends React.Component {
-   
+
   // Constructor 
   constructor(props) {
       super(props);
@@ -24,7 +24,7 @@ class Democomponent extends React.Component {
           DataisLoaded: false
       };
   }
- 
+  
   // ComponentDidMount is used to
   // execute the code 
   componentDidMount() {
@@ -38,23 +38,49 @@ class Democomponent extends React.Component {
               });
           })
   }
+  
   render() {
     
+      
+      
+      
+    const Openprofile = (id) =>{
+          const navigate = useNavigate();
+          navigate("/single-product",{
+            state:{
+              id:"1"
+            }
+          }
+    
+          )
+        }
+    
+      
       const { DataisLoaded, items } = this.state;
       if (!DataisLoaded) return <div>
           <h1> Pleses wait some time.... </h1> </div> ;
  
       return (
-      <div className = "product-item">
-          
+        
+      <a className = "product-item"  >
+        <Link
+        to="/single-product"
+        state={{
+          id:items.id
+        }}>
           <img class="image-product"  src={items.image} alt=""/>
           <div class="info-product">
             <div class="name-product">{items.title}</div>
             <div class="price-product">{items.price}</div>
-          </div>   
+          </div>  
+
+        </Link>
+        
+              
+           
 
           
-      </div>
+      </a>
   );
 }
 }
@@ -67,6 +93,7 @@ class Democomponent extends React.Component {
 
 
 const ProductPage = () => {
+  
     const [state,setState] = useState(Array.from({length:5}))
     const fetchMoreData = () => {
       if (state.length >= 35) {

@@ -26,7 +26,7 @@
    display: grid;
    grid-template-columns: auto auto auto;
    background-color: #fafbfc;
-   padding: 30px;
+   padding: 20px;
 }
 .infor-product{
    flex: 1 0 auto;
