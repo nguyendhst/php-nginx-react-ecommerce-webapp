@@ -4,6 +4,68 @@ import React,{useState} from "react";
 import { render } from "react-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+
+
+
+
+
+
+
+
+
+class Democomponent extends React.Component {
+   
+  // Constructor 
+  constructor(props) {
+      super(props);
+ 
+      this.state = {
+          items: [],
+          DataisLoaded: false
+      };
+  }
+ 
+  // ComponentDidMount is used to
+  // execute the code 
+  componentDidMount() {
+      fetch(
+"https://fakestoreapi.com/products/"+this.props.value)
+          .then((res) => res.json())
+          .then((json) => {
+              this.setState({
+                  items: json,
+                  DataisLoaded: true
+              });
+          })
+  }
+  render() {
+    
+      const { DataisLoaded, items } = this.state;
+      if (!DataisLoaded) return <div>
+          <h1> Pleses wait some time.... </h1> </div> ;
+ 
+      return (
+      <div className = "product-item">
+          
+          <img class="image-product"  src={items.image} alt=""/>
+          <div class="info-product">
+            <div class="name-product">{items.title}</div>
+            <div class="price-product">{items.price}</div>
+          </div>   
+
+          
+      </div>
+  );
+}
+}
+
+
+
+
+
+
+
+
 const ProductPage = () => {
     const [state,setState] = useState(Array.from({length:5}))
     const fetchMoreData = () => {
@@ -32,7 +94,7 @@ const ProductPage = () => {
                     </div>
                 </div>
             </div>
-            <InfiniteScroll
+            <InfiniteScroll class ="product-page"
           dataLength={state.length}
           next={fetchMoreData}
           hasMore={true}
@@ -44,10 +106,14 @@ const ProductPage = () => {
           }
         >
           {state.map((i, index) => (
-            <div class="product-item" key={index}>
-              Item #{index}
+
+            <div class="product-item-all"    key={index}>
+              <Democomponent
+              value={index+1} />
+              {/* Item #{index} */}
             </div>
           ))}
+          
         </InfiniteScroll>
             
             

@@ -1,7 +1,7 @@
 // ProductPage is the page that displays the product details
 
 import React,{useState} from "react";
-import { render } from "react-dom";
+// import { render } from "react-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const TWS = () => {
@@ -43,7 +43,7 @@ const TWS = () => {
           }
         >
           {state.map((i, index) => (
-            <div class="product-item" key={index}>
+            <div class="product-item-all" key={index}>
               Item #{index}
             </div>
           ))}
