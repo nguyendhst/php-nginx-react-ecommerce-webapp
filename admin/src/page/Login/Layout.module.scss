@@ -1,0 +1,17 @@
+@import "./mixins";
+@import "./variables";
+
+.content {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  background-color: #1f41a9;
+  background-image: url(../../assets/BG.svg);
+  color: #fff;
+  .wrapper input{
+    color: #fff;
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.wrapper {
+  margin: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.menu {
+  padding-top: 50px;
+  padding-left: 20px;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  height: 650px;
+  background-color: rgb(66, 66, 66);
+  button {
+    margin-top: 20px;
+    color: #fff;
+    border: none;
+  }
+}
