@@ -1,95 +1,54 @@
-CREATE TABLE `brands` (
-  `id` int,
-  `country_code` int,
-  `brand_name` varchar(255),
-  `created at` varchar(255),
-  PRIMARY KEY (`id`, `country_code`)
-);
-
-CREATE TABLE `users` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `full_name` varchar(255),
-  `role` ENUM ('admin', 'customer'),
-  `created_at` timestamp,
-  `account_id` int NOT NULL
-);
-
-CREATE TABLE `countries` (
-  `code` int PRIMARY KEY,
-  `name` varchar(255) NOT NULL,
-  `continent_name` varchar(255) NOT NULL
-);
-
-CREATE TABLE `accounts` (
-  `account_id` int PRIMARY KEY AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password_hash` varchar(255) NOT NULL
-);
-
-CREATE TABLE `order_items` (
-  `order_id` varchar(255),
-  `product_id` int NOT NULL,
-  `quantity` int NOT NULL DEFAULT 1,
-  PRIMARY KEY (`order_id`, `product_id`)
-);
-
-CREATE TABLE `orders` (
-  `id` varchar(255) PRIMARY KEY,
-  `user_id` int NOT NULL,
-  `status` varchar(255) NOT NULL,
-  `created_at` varchar(255) datetime DEFAULT (now())
-);
-
 CREATE TABLE `products` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255),
-  `brand_id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
   `price` int,
   `status` ENUM ('out_of_stock', 'in_stock', 'running_low'),
-  `created_at` datetime DEFAULT (now())
+  `category` varchar(255) NOT NULL,
+  `main_image` int,
+  `created_at` datetime DEFAULT (now()),
+  `last_modified` datetime DEFAULT (now())
 );
 
-CREATE TABLE `colors` (
+CREATE TABLE `product_specs` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `color` varchar(255) NOT NULL
+  `product_id` int UNIQUE,
+  `desc` varchar(255),
+  `created_at` datetime DEFAULT (now()),
+  `last_modified` datetime DEFAULT (now())
 );
 
-CREATE TABLE `product_colors` (
-  `product_id` int AUTO_INCREMENT,
-  `color_id` int AUTO_INCREMENT,
-  PRIMARY KEY (`product_id`, `color_id`)
+CREATE TABLE `image_links` (
+  `link_id` int PRIMARY KEY AUTO_INCREMENT,
+  `product_id` int,
+  `link` varchar(255) NOT NULL
 );
 
-CREATE TABLE `product_tags` (
-  `id` int PRIMARY KEY,
-  `name` varchar(255)
-);
-
-CREATE INDEX `product_status` ON `products` (`brand_id`, `status`);
+CREATE INDEX `product_status` ON `products` (`status`);
 
 CREATE UNIQUE INDEX `products_index_1` ON `products` (`id`);
 
-ALTER TABLE `brands` ADD FOREIGN KEY (`country_code`) REFERENCES `countries` (`code`);
+CREATE UNIQUE INDEX `product_specs_index_2` ON `product_specs` (`id`);
 
-ALTER TABLE `accounts` ADD FOREIGN KEY (`account_id`) REFERENCES `users` (`account_id`);
+CREATE UNIQUE INDEX `image_links_index_3` ON `image_links` (`link_id`);
 
-ALTER TABLE `order_items` ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
+ALTER TABLE  `products` ADD FOREIGN KEY (`main_image`) REFERENCES `image_links` (`link_id`)  ;
 
-ALTER TABLE `order_items` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+ALTER TABLE `image_links` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
-ALTER TABLE `product_colors` ADD FOREIGN KEY (`color_id`) REFERENCES `colors` (`id`);
+ALTER TABLE `product_specs` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
-ALTER TABLE `product_colors` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
-ALTER TABLE `products` ADD FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`);
+INSERT INTO `products` (`id`, `name`, `category`, `price`, `status`, `main_image`) VALUES 
+  (1, 'Pin dự phòng sạc nhanh 20.000mAh Velasboost F2', 'Charger', 499000, 'in_stock', 1);
 
-CREATE TABLE `product_tags_products` (
-  `product_tags_id` int,
-  `products_id` int,
-  PRIMARY KEY (`product_tags_id`, `products_id`)
-);
+INSERT INTO `product_specs` (`id`, `product_id`, `desc`) VALUES 
+  (1, 1, 'Pin dự phòng sạc nhanh 20.000mAh Velasboost F2');
 
-ALTER TABLE `product_tags_products` ADD FOREIGN KEY (`product_tags_id`) REFERENCES `product_tags` (`id`);
+INSERT INTO `image_links` (`link_id`, `product_id`, `link`) VALUES 
+  (1, 1, 'https://product.hstatic.net/200000384841/product/pin1_1f6c210109a1449a9e6804dac2caf6ed_master.jpg'),
+  (2, 1, 'https://product.hstatic.net/200000384841/product/pin2_36f67353b96f4cfe98d84158fe66d026_master.jpg');
 
-ALTER TABLE `product_tags_products` ADD FOREIGN KEY (`products_id`) REFERENCES `products` (`id`);
+SELECT `link` FROM `image_links` WHERE `product_id` = 1;
+
+SELECT `link` FROM `image_links` INNER JOIN `products` ON `image_links`.`link_id` = `products`.`main_image` WHERE `products`.`id` = 1;
 

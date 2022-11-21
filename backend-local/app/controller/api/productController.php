@@ -8,7 +8,7 @@ class ProductController extends BaseController {
      * @return array
      */
 
-     public function listAction() {
+    public function listAction() {
 
         // error response
         $errStr ='';
@@ -64,8 +64,124 @@ class ProductController extends BaseController {
                     )
                 );
             }
-
         }
-     }
+    }
+
+
+    /**
+     * Get products images links
+     * GET /products/images?id=[]
+     * @return array
+     */
+
+    public function imagesAction() {
+            
+        // error response
+        $errStr ='';
+        $errHeader ='';
+
+        // get method
+        $method = $_SERVER['REQUEST_METHOD'];
+        // get query params
+        $queryParams = $this->getQueryParams();
+        if (strtoupper($method) !== 'GET') {
+            $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
+            return;
+        } else {
+            try {
+                $productModel = new ProductModel();
+
+                if (isset($queryParams['id']) && is_numeric($queryParams['id']) && $queryParams['id'] >= 0) {
+                    $id = $queryParams['id'];
+                } else {
+                    $id = 0;
+                }
+
+                $images = $productModel->getProductImages($id);
+                $res = json_encode($images, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+
+            // response
+            if ($errStr) {
+                $this->responseWriter(
+                    json_encode(array('imagesAction_error' => $errStr)), 
+                    array(
+                        $errHeader,
+                        'Content-Type: application/json'
+                    )
+                );
+
+            } else {
+                $this->responseWriter(
+                    $res,
+                    array(
+                        'HTTP/1.1 200 OK',
+                        'Content-Type: application/json'
+                    )
+                );
+            }
+        } 
+    }
+
+    /**
+     * Get products main image link
+     * GET /products/mainimage?id=[]
+     * @return array
+    */
+
+    public function mainimageAction() {
+            
+        // error response
+        $errStr ='';
+        $errHeader ='';
+
+        // get method
+        $method = $_SERVER['REQUEST_METHOD'];
+        // get query params
+        $queryParams = $this->getQueryParams();
+        if (strtoupper($method) !== 'GET') {
+            $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
+            return;
+        } else {
+            try {
+                $productModel = new ProductModel();
+
+                if (isset($queryParams['id']) && is_numeric($queryParams['id']) && $queryParams['id'] >= 0) {
+                    $id = $queryParams['id'];
+                } else {
+                    $id = 0;
+                }
+
+                $images = $productModel->getProductMainImage($id);
+                $res = json_encode($images, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+
+            // response
+            if ($errStr) {
+                $this->responseWriter(
+                    json_encode(array('mainimageAction_error' => $errStr)), 
+                    array(
+                        $errHeader,
+                        'Content-Type: application/json'
+                    )
+                );
+
+            } else {
+                $this->responseWriter(
+                    $res,
+                    array(
+                        'HTTP/1.1 200 OK',
+                        'Content-Type: application/json'
+                    )
+                );
+            }
+        } 
+    }
 
 }

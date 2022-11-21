@@ -27,9 +27,12 @@ class BaseController {
      * @return array
      */
     protected function getQueryParams() {
-        $query = $_SERVER['QUERY_STRING'];
-        parse_str($query, $queryArray);
-        return $queryArray;
+        if (isset($_SERVER['QUERY_STRING'])) {
+            parse_str($_SERVER['QUERY_STRING'], $params);
+            return $params;
+        } else {
+            return [];
+        }
     }
 
     /**

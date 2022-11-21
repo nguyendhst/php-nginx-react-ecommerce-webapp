@@ -3,9 +3,38 @@ import { Col, Card, Container, Row, Pagination } from "react-bootstrap";
 
 import "./index.css";
 
+const productInfoAPI = "http://127.0.0.1:8000/api/products/list";
+const productImagesAPI = "http://127.0.0.1:8000/api/products/images";
+const productMainImageAPI = "http://127.0.0.1:8000/api/products/mainimage";
+
+const fetchAllProductsInfo = async () => {
+  const response = await fetch(productInfoAPI);
+  const data = await response.json();
+  console.log(data);
+  const products = JSON.parse(data);
+  console.log(products);
+  return products;
+};
+
+const fetchProductImages = async (id) => {
+  const response = await fetch(`${productImagesAPI}/${id}`);
+  const data = await response.json();
+  const images = JSON.parse(data);
+  return images;
+};
+
+const fetchProductMainImage = async (id) => {
+  const response = await fetch(`${productMainImageAPI}?id=${id}`);
+  const data = await response.json();
+  const image = JSON.parse(data);
+  console.log(image);
+  return image[0];
+};
+
 function ProductsGrid(props) {
-  const [products, setProducts] = React.useState(props.products);
-  const [category, setCategory] = React.useState(props.category);
+  const [products, setProducts] = React.useState([]);
+  const [images, setImages] = React.useState([]);
+  const [category, setCategory] = React.useState([]);
   const [page, setPage] = React.useState(1);
 
   const [sort, setSort] = React.useState("default");
@@ -26,19 +55,42 @@ function ProductsGrid(props) {
 
   const [productsPerPage, setProductsPerPage] = React.useState(5);
   const [totalPages, setTotalPages] = React.useState(
-    Math.ceil(props.products.length / 5)
+    Math.ceil(products.length / productsPerPage)
   );
-  console.log(totalPages);
 
   const [isLoaded, setIsLoaded] = React.useState(false);
 
-  React.useEffect(() => {}, []);
+  // load products from API when first mounted
+  React.useEffect(() => {
+    fetchAllProductsInfo().then((data) => {
+      setProducts(data);
+      setIsLoaded(true);
+    });
+  }, []);
 
-  const populatePage = (pageNumber) => {
-    const start = (pageNumber - 1) * productsPerPage;
-    const end = start + productsPerPage;
-    const pageProducts = products.slice(start, end);
-    return pageProducts;
+  // fetch main image for each product
+  React.useEffect(() => {
+    products.map((product) => {
+      fetchProductMainImage(product.id).then((data) => {
+        setImages([...images, data]);
+      });
+    });
+  }, [products]);
+
+  // load products from API when category changes
+  // React.useEffect(() => {
+  //   fetchAllProducts().then((data) => {
+  //     setProducts(data);
+  //     setIsLoaded(true);
+  //   });
+  // }, [category]);
+
+  const getImageOfProduct = (id) => {
+    const image = images.find((image) => image.link_id === id);
+    console.log(image);
+    console.log(products);
+    console.log(images);
+    return image;
   };
 
   return (
@@ -47,17 +99,18 @@ function ProductsGrid(props) {
         <Row>
           <Col md={12}>
             <Row>
-              {populatePage(page).map((product) => (
+              {products.map((product) => (
                 <Col md={4} key={product.id}>
-                  <Card>
-                    <Card.Img variant="top" src={product.image} />
+                  <Card className="product-card">
+                    <Card.Img
+                      variant="top"
+                      src={getImageOfProduct(product.id).link}
+                    />
                     <Card.Body>
                       <Card.Title>{product.name}</Card.Title>
                       <Card.Text>{product.description}</Card.Text>
+                      <Card.Text>{product.price}</Card.Text>
                     </Card.Body>
-                    <Card.Footer>
-                      <small className="text-muted">{product.price}</small>
-                    </Card.Footer>
                   </Card>
                 </Col>
               ))}

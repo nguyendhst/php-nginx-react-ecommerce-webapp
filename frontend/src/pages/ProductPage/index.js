@@ -168,7 +168,7 @@ const ProductPage = () => {
         title={urlArray.length > 2 ? urlArray[urlArray.length - 1] : "Products"}
       />
 
-      <ProductsGrid products={mockData} />
+      <ProductsGrid />
 
       {/* <Routes>
         <Route path="single-product" element={<CategorizedPage />} />

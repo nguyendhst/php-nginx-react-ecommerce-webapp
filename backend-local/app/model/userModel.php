@@ -2,7 +2,7 @@
 
 require_once PROJECT_ROOT . "/model/database.php";
 
-class UserModel extends Database {
+class UserModel extends AccountDatabase {
     
     public function getUser($username) {
         $query = "SELECT * FROM users WHERE username = ?;";
