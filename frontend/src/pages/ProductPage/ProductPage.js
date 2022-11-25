@@ -29,7 +29,7 @@ class Democomponent extends React.Component {
   // execute the code 
   componentDidMount() {
       fetch(
-"https://fakestoreapi.com/products/"+this.props.value)
+"http://localhost:3003/api/products"+this.props.value)
           .then((res) => res.json())
           .then((json) => {
               this.setState({
@@ -63,7 +63,7 @@ class Democomponent extends React.Component {
       return (
         
       <a className = "product-item"  >
-        <Link
+        <Link class="product-item-a"
         to="/single-product"
         state={{
           id:items.id

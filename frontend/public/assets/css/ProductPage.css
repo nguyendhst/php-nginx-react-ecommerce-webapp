@@ -53,6 +53,7 @@
 
 }
 .image-product
+
 .name-product{
    position: absolute;
    top: 0;
@@ -60,6 +61,18 @@
    width: 100%;
    height: 100%;
    background-color: #fff;
+}
+.image-product{
+   height: 80%;
+   margin: 0 auto;
+}
+   
+.product-item-a{
+   width: 80%;
+   height: 90%;
+   margin: 0 auto;
+
+   
 }
 .product-item {
    text-decoration: none;
