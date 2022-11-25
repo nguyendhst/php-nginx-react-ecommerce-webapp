@@ -38,6 +38,8 @@ ALTER TABLE `image_links` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (
 ALTER TABLE `product_specs` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 
+SET FOREIGN_KEY_CHECKS=0;
+
 INSERT INTO `products` (`id`, `name`, `category`, `price`, `status`, `main_image`) VALUES 
   (1, 'Pin dự phòng sạc nhanh 20.000mAh Velasboost F2', 'Charger', 499000, 'in_stock', 1);
 
@@ -52,3 +54,4 @@ SELECT `link` FROM `image_links` WHERE `product_id` = 1;
 
 SELECT `link` FROM `image_links` INNER JOIN `products` ON `image_links`.`link_id` = `products`.`main_image` WHERE `products`.`id` = 1;
 
+SET FOREIGN_KEY_CHECKS=1;
