@@ -29,7 +29,7 @@ class Democomponent extends React.Component {
   // execute the code 
   componentDidMount() {
       fetch(
-"http://localhost:3003/api/products"+this.props.value)
+'https://fakestoreapi.com/products/'+this.props.value)
           .then((res) => res.json())
           .then((json) => {
               this.setState({
@@ -94,7 +94,7 @@ class Democomponent extends React.Component {
 
 const ProductPage = () => {
   
-    const [state,setState] = useState(Array.from({length:5}))
+    const [state,setState] = useState(Array.from({length:3}))
     const fetchMoreData = () => {
       if (state.length >= 35) {
         this.setState({ hasMore: false });
@@ -103,7 +103,7 @@ const ProductPage = () => {
         // a fake async api call like which sends   
         // 20 more records in 1.5 secs
         setTimeout(() => {
-          setState(state.concat(Array.from({ length: 5 })))
+          setState(state.concat(Array.from({ length: 3 })))
         }, 1500);
       };
     return (

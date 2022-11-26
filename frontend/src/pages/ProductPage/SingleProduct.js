@@ -38,8 +38,8 @@ class Democomponent extends React.Component {
  
         return (
           // render logic here
-          <a className = "product-item"  >
-            <img class="image-product"  src={items.image} alt=""/>
+          <a class = "col-12"  >
+            <img class="image-product-single"  src={items.image} alt=""/>
             <div class="info-product">
             <div class="name-product">{items.title}</div>
             <div class="price-product">{items.price}</div>
