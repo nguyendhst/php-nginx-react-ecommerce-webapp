@@ -20,6 +20,8 @@ function Header() {
                                        <li><Link to={{ pathname: "/products"}}>Products</Link></li>
                                        <li><Link to={{ pathname: "/single-product"}}>Single Product</Link></li>
                                        <li><Link to={{ pathname: "/contact-us"}}>Contact Us</Link></li>
+                                       <li><Link to={{ pathname: "/managepost"}}>Manage Post</Link></li>
+                                       <li><Link to={{ pathname: "/news"}}>News</Link></li>
                                    </ul>
                                </li>
                                 
