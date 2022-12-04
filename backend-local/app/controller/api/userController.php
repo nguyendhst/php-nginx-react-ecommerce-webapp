@@ -1,15 +1,20 @@
 <?php
 
+// JWT
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+require_once( PROJECT_ROOT . "/../vendor/autoload.php");
+
+
+
 class UserController extends BaseController {
 
     /**
      * Create user account
-     * @param $username
-     * @param $password
-     * @return array
+     * POST /api/user/register
+     * @return json
      */
-
-    public function createAction($username, $password) {
+    public function createAccountAction() {
 
         // error response
         $errStr ='';
@@ -24,14 +29,41 @@ class UserController extends BaseController {
             return;
         } else {
             try {
+                $payload = json_decode(file_get_contents('php://input'), true);
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 400 Bad Request';
+            }
+            $username = $payload['username'];
+            $password = $payload['password'];
+            $role = "Customer";
+            $lname = $payload['lname'];
+            $fname = $payload['fname'];
+            $email = $payload['email'];
+            $phone = $payload['phone'];
+            $yob = $payload['yob'];
+            $data = [
+                "role" => $role,
+                "lname" => $lname,
+                "fname" => $fname,
+                "phone" => $phone,
+                "email" => $email,
+                "username" => $username,
+                "password_hash" => password_hash($password, PASSWORD_DEFAULT),
+                "yob" => $yob
+            ];
+
+            try {
                 $userModel = new UserModel();
                 $user = $userModel->getUser($username);
                 if (count($user) > 0) {
-                    $this->responseWriter(array('error' => 'User already exists'), array('HTTP/1.1 409 Conflict'));
-                    return;
+                    throw new Exception("Username already exists");
                 }
-                $userModel->createUser($username, $this->bhash($password));
-                $res = json_encode(array('success' => 'User created'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                if ($userModel->createUser($data)) {
+                    $res = json_encode(array('status' => 'success', 'message' => 'User created successfully'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                } else {
+                    throw new Exception('User creation failed');
+                }
             } catch (Exception $e) {
                 $errStr = $e->getMessage();
                 $errHeader = 'HTTP/1.1 500 Internal Server Error';
@@ -46,7 +78,6 @@ class UserController extends BaseController {
                         'Content-Type: application/json'
                     )
                 );
-
             } else {
                 $this->responseWriter(
                     $res,
@@ -59,13 +90,12 @@ class UserController extends BaseController {
     }
 
     /**
-     * Authenticate user
-     * @param $username
-     * @param $password
+     * Authenticate user's login request
+     * POST /users/login
      * @return array
      */
 
-     public function authenticateAction($username, $password) {
+     public function loginAction() {
 
         // error response
         $errStr ='';
@@ -80,14 +110,41 @@ class UserController extends BaseController {
             return;
         } else {
             try {
+                $payload = json_decode(file_get_contents('php://input'), true);
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 400 Bad Request';
+            }
+            $username = $payload['username'];
+            $password = $payload['password'];
+
+            try {
                 $userModel = new UserModel();
                 $user = $userModel->getUser($username);
                 if (count($user) === 0) {
                     $this->responseWriter(array('error' => 'User does not exist'), array('HTTP/1.1 404 Not Found'));
                     return;
                 }
-                if ($this->bverify($password, $user[0]['password'])) {
-                    $res = json_encode(array('success' => 'User authenticated'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                // if valiation succeed, generate a JWT token
+                if ($this->bverify($password, $user[0]['password_hash'])) {
+                    $token = array(
+                        "iat" => time(),
+                        "nbf" => time(),
+                        "exp" => time() + 3600,
+                        "data" => array(
+                            "id" => $user[0]['id'],
+                            "username" => $user[0]['username'],
+                            "role" => $user[0]['role']
+                        )
+                    );
+                    $jwt = JWT::encode($token, JWT_SECRET, 'HS256');
+                    // returns token, role, user info
+                    $res = json_encode(array(
+                        'success' => 'User authenticated',
+                        'token' => $jwt,
+                        'user_info' => $user[0]
+
+                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                 } else {
                     $this->responseWriter(array('error' => 'User authentication failed'), array('HTTP/1.1 401 Unauthorized'));
                     return;
@@ -107,6 +164,61 @@ class UserController extends BaseController {
                     )
                 );
 
+            } else {
+                $this->responseWriter(
+                    $res,
+                    array(
+                        'Content-Type: application/json'
+                    )
+                );
+            }
+        }
+    }
+
+    /* Get user info
+     * GET /users/info
+     * @return json
+     */
+
+    public function getUserInfoAction() {
+            
+        // error response
+        $errStr ='';
+        $errHeader ='';
+
+        // get method
+        $method = $_SERVER['REQUEST_METHOD'];
+        // get query params
+        $queryParams = $this->getQueryParams();
+        if (strtoupper($method) !== 'GET') {
+            $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
+            return;
+        } else {
+            // check if authorization header is set
+            if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
+                $this->responseWriter(array('error' => 'Authorization header not found'), array('HTTP/1.1 401 Unauthorized'));
+                return;
+            }
+            try {
+                $jwt = $matches[1];
+                $decoded = JWT::decode($jwt, new Key(JWT_SECRET, 'HS256'));
+                $userModel = new UserModel();
+                $user = $userModel->getUser($decoded->data->username);
+                $res = json_encode(array('success' => 'User info', 'user' => $user));
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+
+            // response
+            if ($errStr) {
+                $this->responseWriter(
+                    json_encode(array('getUserInfoAction_error' => $errStr)), 
+                    array(
+                        $errHeader,
+                        'Content-Type: application/json'
+                    )
+                );
             } else {
                 $this->responseWriter(
                     $res,

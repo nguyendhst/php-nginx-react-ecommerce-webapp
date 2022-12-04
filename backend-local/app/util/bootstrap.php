@@ -1,6 +1,7 @@
 <?php
 
 define("PROJECT_ROOT", __DIR__ . "/..");
+define("JWT_SECRET", "duhast");
 
 // include config file
 require_once PROJECT_ROOT . "/util/config.php";

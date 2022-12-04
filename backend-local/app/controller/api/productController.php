@@ -4,7 +4,7 @@ class ProductController extends BaseController {
 
     /**
      * List products
-     * GET /products/list?limit=[]&offset=[]
+     * GET /products/list?limit=[]&offset=[]&category=[]
      * @return array
      */
 
@@ -38,7 +38,13 @@ class ProductController extends BaseController {
                     $offset = 0;
                 }
 
-                $products = $productModel->getProducts($limit, $offset);
+                if (isset($queryParams['category']) && is_string($queryParams['category']) && $queryParams['category'] >= 0) {
+                    $category = $queryParams['category'];
+                } else {
+                    $category = '';
+                }
+
+                $products = $productModel->getProducts($limit, $offset, $category);
                 $res = json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             } catch (Exception $e) {
                 $errStr = $e->getMessage();

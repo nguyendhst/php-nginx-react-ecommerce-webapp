@@ -5,7 +5,7 @@ require_once PROJECT_ROOT . "/model/database.php";
 class UserModel extends AccountDatabase {
     
     public function getUser($username) {
-        $query = "SELECT * FROM users WHERE username = ?;";
+        $query = "SELECT `role`, `lname`, `fname`, `phone`, `email`, `yob`, `username` FROM `Users` WHERE `username` = ?;";
         $params = [
             "s",
             $username
@@ -13,18 +13,24 @@ class UserModel extends AccountDatabase {
         return $this->select($query, $params);
     }
 
-    public function createUser($username, $password_hash) {
-        $query = "INSERT INTO users (username, password) VALUES (?, ?);";
+    public function createUser($data) {
+        $query = "INSERT INTO `Users` (`role`, `lname`, `fname`, `phone`, `email`, `username`, `password_hash`, `yob`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         $params = [
-            "ss",
-            $username,
-            $password_hash
+            "sssssssi",
+            $data["role"],
+            $data["lname"],
+            $data["fname"],
+            $data["phone"],
+            $data["email"],
+            $data["username"],
+            $data["password_hash"],
+            $data["yob"]
         ];
         return $this->insert($query, $params);
     }
 
     public function updateUser($username, $password_hash) {
-        $query = "UPDATE users SET password = ? WHERE username = ?;";
+        $query = "UPDATE `Users` SET `password` = ? WHERE `username` = ?;";
         $params = [
             "ss",
             $password_hash,
