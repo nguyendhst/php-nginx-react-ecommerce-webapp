@@ -5,7 +5,7 @@ require_once PROJECT_ROOT . "/model/database.php";
 class UserModel extends Database {
     
     public function getUser($username) {
-        $query = "SELECT * FROM users WHERE username = ?;";
+        $query = "SELECT * FROM `Users` WHERE username = ?;";
         $params = [
             "s",
             $username
@@ -14,7 +14,7 @@ class UserModel extends Database {
     }
 
     public function createUser($username, $password_hash) {
-        $query = "INSERT INTO users (username, password) VALUES (?, ?);";
+        $query = "INSERT INTO `Users` (`role`, `lname`, `fname`, `phone`, `email`, `username`, `password_hash`, `yob`) VALUES";
         $params = [
             "ss",
             $username,

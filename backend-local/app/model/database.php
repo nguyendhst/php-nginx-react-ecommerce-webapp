@@ -138,5 +138,4 @@ class AccountDatabase {
             throw new Exception($e->getMessage());
         }
     }
-            
 }

@@ -13,7 +13,15 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
 $routes = [
-    "products" => "ProductController"
+    "products" => "ProductController",
+    "users" => "UserController"
+];
+
+$actions = [
+    'list' => 'listAction',
+    'images' => 'imagesAction',
+    'mainimage' => 'mainimageAction',
+    'authenticate' => 'authenticateAction',
 ];
 
 // redirect
@@ -32,14 +40,6 @@ if (!isset($uri[2]) || !isset($routes[$uri[2]])) {
     header('HTTP/1.1 404 Not Found');
     return;
 }
-
-// all actions
-
-$actions = [
-    'list' => 'listAction',
-    'images' => 'imagesAction',
-    'mainimage' => 'mainimageAction',
-];
 
 // get action name
 $actionName = $actions[$uri[3]] ?? '';
