@@ -15,8 +15,8 @@ import PowerBlank from "./pages/ProductPage/PowerBlank";
 import TWS from "./pages/ProductPage/TWS";
 import Post from "./pages/PostPage/Post";
 import ManagePost from "./pages/PostPage/ManagePost";
-import EditPost from "./pages/PostPage/EditPost";
-import CreatePost from "./pages/PostPage/CreatePost";
+// import EditPost from "./pages/PostPage/EditPost";
+// import CreatePost from "./pages/PostPage/CreatePost";
 import News from "./pages/PostPage/News";
 function App() {
   return (
@@ -40,8 +40,8 @@ function App() {
             <Route path="/news" element={<News />} />
             <Route path="/post/:id" element={<Post />} />
             <Route path="/managepost" element={<ManagePost />} />
-            <Route path="post/:id/editpost" element={<EditPost />} />
-            <Route path="post/createpost" element={<CreatePost />} />
+            {/* <Route path="post/:id/editpost" element={<EditPost />} /> */}
+            {/* <Route path="post/createpost" element={<CreatePost />} /> */}
 
 
 
