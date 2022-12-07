@@ -14,7 +14,7 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
 /* All routes:
     * GET /api/products/list
-    * GET /api/products/list?limit=[]&offset=[]
+    * GET /api/products/list?limit=[]&offset=[]&category=[]
     * GET /api/products/images?id=[]
     * GET /api/products/mainimage?id=[]
     * 

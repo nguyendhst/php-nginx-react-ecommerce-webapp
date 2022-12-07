@@ -6,21 +6,21 @@ import { useState } from "react";
 
 import { Card, Col, Container, Row } from "react-bootstrap";
 
-import { useNavigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 import AuthServices from "../../services/auth.service";
 import Login from "./Login";
 
 function Users() {
-    const navigate = useNavigate();
+    
     const [currentUser, setCurrentUser] = useState(undefined);
 
     useEffect(() => {
         const user = AuthServices.getCurrentUser();
         if (!user) {
-            navigate("/users/login", { replace: true });
+            redirect("/login");
         } else if (user.role === "Admin") {
-            navigate("/dashboard", { replace: true });
+            redirect("/dashboard");
         }
         setCurrentUser(user);
     }, []);
