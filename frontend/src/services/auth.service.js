@@ -1,37 +1,38 @@
-const AuthURL = "http://localhost:8080/user/";
+const AuthURL = "http://localhost:8080/api/users/";
 
 class AuthServices {
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem("user"));
+        if (localStorage.getItem("user")) {
+            return JSON.parse(localStorage.getItem("user"));
+        }
+        return null;
     }
     logout() {
+        console.log("logout");
         localStorage.removeItem("user");
     }
 
     async login(username, password) {
-        fetch(AuthURL + "login", {
+        const data = fetch(AuthURL + "login", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+                Accept: "application/json",
+                "Content-Type": "application/json;charset=UTF-8",
             },
             body: JSON.stringify({
                 username: username,
                 password: password,
             }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-            })
-            .then((data) => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem("user", JSON.stringify(data));
-                return data;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        });
+
+        const response = await data;
+        const user = await response.json();
+
+        console.log("user: ", user);
+        localStorage.setItem("user", JSON.stringify(user));
+        console.log(localStorage);
+
+        return user;
     }
 }
 

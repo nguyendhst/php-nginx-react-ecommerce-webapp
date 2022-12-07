@@ -13,7 +13,12 @@ import Users from "./pages/Users";
 import Login from "./pages/Users/Login";
 import Register from "./pages/Users/Register";
 
+import AuthServices from "./services/auth.service";
+
 function App() {
+    // Check if user is logged in
+    const user = JSON.parse(AuthServices.getCurrentUser());
+    console.log("logged in as: ", user);
     return (
         <React.Fragment>
             <Header />
@@ -29,7 +34,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>
-            <Footer></Footer>
+            <Footer />
         </React.Fragment>
     );
 }

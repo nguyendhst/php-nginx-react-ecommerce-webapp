@@ -132,7 +132,6 @@ class UserController extends BaseController {
                         "nbf" => time(),
                         "exp" => time() + 3600,
                         "data" => array(
-                            "id" => $user[0]['id'],
                             "username" => $user[0]['username'],
                             "role" => $user[0]['role']
                         )
@@ -142,7 +141,15 @@ class UserController extends BaseController {
                     $res = json_encode(array(
                         'success' => 'User authenticated',
                         'token' => $jwt,
-                        'user_info' => $user[0]
+                        'user_info' => array(
+                            'username' => $user[0]['username'],
+                            'role' => $user[0]['role'],
+                            'lname' => $user[0]['lname'],
+                            'fname' => $user[0]['fname'],
+                            'email' => $user[0]['email'],
+                            'phone' => $user[0]['phone'],
+                            'yob' => $user[0]['yob']
+                        )
 
                     ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                 } else {

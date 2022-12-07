@@ -1,3 +1,4 @@
 .env
 database/
 .DS_Store
+mysql/
