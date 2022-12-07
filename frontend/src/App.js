@@ -11,6 +11,7 @@ import DashBoard from "./pages/Dashboard";
 import NotFound from "./pages/404";
 import Users from "./pages/Users";
 import Login from "./pages/Users/Login";
+import Register from "./pages/Users/Register";
 
 function App() {
     return (
@@ -20,9 +21,9 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="products/*" element={<Products />} />
-                    <Route path="users" element={<Users />}>
-                        <Route path="login" element={<Login />} />
-                    </Route>
+                    <Route path="users" element={<Users />} />
+                    <Route path="users/login" element={<Login />} />
+                    <Route path="users/register" element={<Register />} />
                     <Route path="admin/*" element={<DashBoard />} />
 
                     <Route path="*" element={<NotFound />} />

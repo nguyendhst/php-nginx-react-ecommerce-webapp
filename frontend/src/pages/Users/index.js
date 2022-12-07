@@ -6,34 +6,35 @@ import { useState } from "react";
 
 import { Card, Col, Container, Row } from "react-bootstrap";
 
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import AuthServices from "../../services/auth.service";
 import Login from "./Login";
 
 function Users() {
-    
-    const [currentUser, setCurrentUser] = useState(undefined);
+    const navigation = useNavigate();
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         const user = AuthServices.getCurrentUser();
-        if (!user) {
-            redirect("/login");
-        } else if (user.role === "Admin") {
-            redirect("/dashboard");
+        if (user) {
+            setUser(user);
+        } else {
+            console.log("No user found");
+            navigation("/users/login");
         }
-        setCurrentUser(user);
-    }, []);
+    }, []);    
 
-    // add route
+    
 
     return (
+        <>
         <Container>
             <div>
                 <h1>Users</h1>
             </div>
-         
         </Container>
+        </>
     );
 }
 

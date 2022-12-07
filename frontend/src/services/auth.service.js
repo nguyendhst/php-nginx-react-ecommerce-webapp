@@ -8,7 +8,7 @@ class AuthServices {
         localStorage.removeItem("user");
     }
 
-    login(username, password) {
+    async login(username, password) {
         fetch(AuthURL + "login", {
             method: "POST",
             headers: {
@@ -25,6 +25,7 @@ class AuthServices {
                 }
             })
             .then((data) => {
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem("user", JSON.stringify(data));
                 return data;
             })
