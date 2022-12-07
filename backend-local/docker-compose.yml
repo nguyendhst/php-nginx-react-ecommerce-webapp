@@ -18,20 +18,21 @@ services:
       - 9000:9000
     volumes:
       - ./app:/app
+      - ./vendor:/vendor
+      - ./images:/images
     depends_on:
       - mysql_db
 
 
   mysql_db:
-    image: mysql:8.0
+    build:
+      context: .
+      dockerfile: mysql.Dockerfile
     ports:
       - 3306:3306
-    volumes:
-      - ./database:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: root
+      MYSQL_USER: test
       MYSQL_PASSWORD: test
-
-volumes:
-  database: {}
+    volumes:
+      - ./mysql:/var/lib/mysql

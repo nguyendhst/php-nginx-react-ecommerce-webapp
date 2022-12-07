@@ -1,3 +1,9 @@
+/* create the accounts database */
+/* charset unicode */
+CREATE DATABASE IF NOT EXISTS `btl_accounts` DEFAULT CHARACTER SET utf16 COLLATE utf16_general_ci;
+
+USE `btl_accounts`;
+
 CREATE TABLE `Users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `role` ENUM ('Admin', 'Customer'),
@@ -17,11 +23,3 @@ CREATE UNIQUE INDEX `Users_index_0` ON `Users` (`email`);
 CREATE INDEX `Users_index_1` ON `Users` (`lname`, `fname`);
 
 CREATE INDEX `Users_index_2` ON `Users` (`username`);
-
-
-/*-- Path: backend-local/sql/init_accounts.sql
-
-/* insert data */
-
-INSERT INTO `Users` (`role`, `lname`, `fname`, `phone`, `email`, `username`, `password_hash`, `yob`)
-    

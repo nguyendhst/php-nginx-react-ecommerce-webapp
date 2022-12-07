@@ -1,3 +1,8 @@
+/* Create database */
+CREATE DATABASE IF NOT EXISTS `btl_products` DEFAULT CHARACTER SET utf16 COLLATE utf16_general_ci;
+
+USE `btl_products`;
+
 CREATE TABLE `products` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -49,9 +54,5 @@ INSERT INTO `product_specs` (`id`, `product_id`, `desc`) VALUES
 INSERT INTO `image_links` (`link_id`, `product_id`, `link`) VALUES 
   (1, 1, 'https://product.hstatic.net/200000384841/product/pin1_1f6c210109a1449a9e6804dac2caf6ed_master.jpg'),
   (2, 1, 'https://product.hstatic.net/200000384841/product/pin2_36f67353b96f4cfe98d84158fe66d026_master.jpg');
-
-SELECT `link` FROM `image_links` WHERE `product_id` = 1;
-
-SELECT `link` FROM `image_links` INNER JOIN `products` ON `image_links`.`link_id` = `products`.`main_image` WHERE `products`.`id` = 1;
 
 SET FOREIGN_KEY_CHECKS=1;
