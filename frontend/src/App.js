@@ -29,8 +29,7 @@ function App() {
                     <Route path="users" element={<Users />} />
                     <Route path="users/login" element={<Login />} />
                     <Route path="users/register" element={<Register />} />
-                    <Route path="admin/*" element={<DashBoard />} />
-
+                    <Route path="dashboard" element={<DashBoard />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>

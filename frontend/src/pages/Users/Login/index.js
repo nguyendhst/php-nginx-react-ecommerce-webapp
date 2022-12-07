@@ -22,7 +22,7 @@ const login = (e) => {
 
         // if user is admin, redirect to admin page
         if (parsed.user_info.role === "Admin") {
-            window.location.href = "/admin";
+            window.location.href = "/dashboard";
         } else {
             window.location.href = "/";
         }
