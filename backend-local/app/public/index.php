@@ -30,7 +30,7 @@ if ($method == "OPTIONS") {
     * GET  /api/users/info
     * POST /api/users/login
     * POST /api/users/register
-    * 
+    *  
 */
 
 

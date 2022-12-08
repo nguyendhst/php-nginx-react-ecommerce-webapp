@@ -1,72 +1,130 @@
-import React from 'react';
+import React from "react";
+import { useEffect, useState } from "react";
 import {
-  useEffect,
-  useState,
-} from 'react';
-import {
-  Card,
-  Col,
-  Container,
-  Row,
-  Table,
-} from 'react-bootstrap';
+    Card,
+    Col,
+    Container,
+    Row,
+    Table,
+    Nav,
+    Tab,
+    Tabs,
+} from "react-bootstrap";
 
+const productsCols = [
+    "id",
+    "name",
+    "category",
+    "price",
+    // "main_image",
+    // "category",
+    // "images",
+];
 
-import Sidebar from '../../components/Sidebar';
+const userCols = ["username", "fname", "lname", "email", "phone"];  
 
 function DashBoard() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [currentTab, setCurrentTab] = useState("products");
+    const [data, setData] = useState([]);
+    const [columns, setColumns] = useState(productsCols);
 
-  useEffect(() => {
-    fetch('http://localhost:5000/api/users')
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data);
-        setLoading(false);
-      });
-  }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                `http://localhost:8080/api/${currentTab}/list`
+            );
+            const data = await response.json();
+            console.log(data);
+            setData(JSON.parse(data));
+            setLoading(false);
+        };
+        fetchData();
 
-  return (
-    <div>
-      <Container fluid>
-        <Row>
-          <Col md={2}>
-            <Sidebar />
-          </Col>
-          <Col md={10}>
-            <h1>Dashboard</h1>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? (
-                  <tr>
-                    <td colSpan={4}>Loading...</td>
-                  </tr>
-                ) : (
-                  users.map((user) => (
-                    <tr key={user.id}>
-                      <td>{user.id}</td>
-                      <td>{user.username}</td>
-                      <td>{user.email}</td>
-                      <td>{user.role}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  );
+        if (currentTab === "products") {
+            setColumns(productsCols);
+        } else {
+            setColumns(userCols);
+        }
+    }, []);
+
+    useEffect(() => {
+        console.log("tab changed");
+        const fetchData = async () => {
+            const response = await fetch(
+                `http://localhost:8080/api/${currentTab}/list`
+            );
+            const data = await response.json();
+            console.log(data);
+            setData(JSON.parse(data));
+            setLoading(false);
+        };
+        fetchData().then(() => {
+            if (currentTab === "products") {
+                setColumns(productsCols);
+            } else {
+                setColumns(userCols);
+            }
+        });
+    }, [currentTab]);
+
+    return (
+        <div>
+            <Container>
+                <Nav
+                    fill
+                    variant="tabs"
+                    defaultActiveKey="products"
+                    onSelect={(selectedKey) => setCurrentTab(selectedKey)}
+                >
+                    <Nav.Item>
+                        <Nav.Link eventKey="products">Products</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="users">Users</Nav.Link>
+                    </Nav.Item>
+                </Nav>
+                <Table>
+                    <thead>
+                        <tr>
+                            {columns.map((col) => (
+                                <th>{col}</th>
+                            ))}
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.keys(data).map((key) => (
+                            <tr>
+                                {columns.map((col) => (
+                                    <td>{data[key][col]}</td>
+                                ))}
+                                <td>
+                                    <button
+                                        onClick={() => {
+                                            console.log("edit");
+                                        }}
+                                        className="btn btn-primary"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            console.log("delete");
+                                        }}
+                                        className="btn btn-danger"
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </Container>
+        </div>
+    );
 }
 
 export default DashBoard;

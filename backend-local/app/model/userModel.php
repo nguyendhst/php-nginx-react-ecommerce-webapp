@@ -13,6 +13,27 @@ class UserModel extends AccountDatabase {
         return $this->select($query, $params);
     }
 
+    public function getUsers($limit, $offset, $role) {
+        // if role is empty string, then get all users
+        if ($role === "") {
+            $query = "SELECT `role`, `lname`, `fname`, `phone`, `email`, `yob`, `username` FROM `Users` LIMIT ? OFFSET ?;";
+            $params = [
+                "ii",
+                $limit,
+                $offset
+            ];
+        } else {
+            $query = "SELECT `role`, `lname`, `fname`, `phone`, `email`, `yob`, `username` FROM `Users` WHERE `role` = ? LIMIT ? OFFSET ?;";
+            $params = [
+                "sii",
+                $role,
+                $limit,
+                $offset
+            ];
+        }
+        return $this->select($query, $params);
+    }
+
     public function createUser($data) {
         $query = "INSERT INTO `Users` (`role`, `lname`, `fname`, `phone`, `email`, `username`, `password_hash`, `yob`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         $params = [

@@ -9,6 +9,78 @@ require_once( PROJECT_ROOT . "/../vendor/autoload.php");
 
 class UserController extends BaseController {
 
+
+
+    /** 
+     * List users
+     * GET /api/users/list?limit=[]&offset=[]&role=[]
+     * @return json
+     */
+
+    public function listAction() {
+
+        // error response
+        $errStr ='';
+        $errHeader ='';
+
+        // get method
+        $method = $_SERVER['REQUEST_METHOD'];
+        // get query params
+        $queryParams = $this->getQueryParams();
+        if (strtoupper($method) !== 'GET') {
+            $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
+            return;
+        } else {
+            try {
+                $userModel = new UserModel();
+                $defaultLimit = 10;
+
+                if (isset($queryParams['limit']) && is_numeric($queryParams['limit']) && $queryParams['limit'] >= 0) {
+                    $limit = $queryParams['limit'];
+                } else {
+                    $limit = $defaultLimit;
+                }
+
+                if (isset($queryParams['offset']) && is_numeric($queryParams['offset']) && $queryParams['offset'] >= 0) {
+                    $offset = $queryParams['offset'];
+                } else {
+                    $offset = 0;
+                }
+
+                if (isset($queryParams['role']) && is_string($queryParams['role']) && $queryParams['role'] >= 0) {
+                    $role = $queryParams['role'];
+                } else {
+                    $role = '';
+                }
+
+                $users = $userModel->getUsers($limit, $offset, $role);
+                $res = json_encode($users, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+
+            // response
+            if ($errStr) {
+                $this->responseWriter(
+                    json_encode(array('listAction_error' => $errStr)), 
+                    array(
+                        $errHeader,
+                        'Content-Type: application/json'
+                    )
+                );
+            } else {
+                $this->responseWriter(
+                    $res,
+                    array(
+                        'Content-Type: application/json'
+                    )
+                );
+            }
+        }
+    }
+
     /**
      * Create user account
      * POST /api/user/register
