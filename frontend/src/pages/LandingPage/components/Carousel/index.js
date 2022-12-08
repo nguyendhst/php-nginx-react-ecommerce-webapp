@@ -13,7 +13,7 @@ export default class FeaturedCarousel extends Component {
             alt="First slide"
           />
           <Carousel.Caption>
-            <h3>First slide label</h3>
+            <h3>Featured Products</h3>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>

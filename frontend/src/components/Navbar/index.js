@@ -17,12 +17,20 @@ const Header = () => {
   return (
     <Navbar collapseOnSelect expand="lg" className="bgcolor" variant="dark" >
     <Container>
-      <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+      <Navbar.Brand href="/">BTL</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto">
-          <Nav.Link href="#features">Features</Nav.Link>
-          <Nav.Link href="#pricing">Pricing</Nav.Link>
+          {/*  dropdown */}
+          <NavDropdown title="Products" id="collasible-nav-dropdown">
+            <NavDropdown.Item href="/products/charger">Charger</NavDropdown.Item>
+            <NavDropdown.Item href="/products/tws">TWS</NavDropdown.Item>
+            <NavDropdown.Item href="/products/cable">Cable</NavDropdown.Item>
+            <NavDropdown.Item href="/products/powerbank">Powerbank</NavDropdown.Item>
+            <NavDropdown.Item href="/products/lifestyle">Lifestyle</NavDropdown.Item>
+          </NavDropdown>
+
+    
           
         </Nav>
         <Nav>

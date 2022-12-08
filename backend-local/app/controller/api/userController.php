@@ -147,6 +147,11 @@ class UserController extends BaseController {
                 "yob" => $yob
             ];
 
+            if (!validateUserData($data)) {
+                $this->responseWriter(array('error' => 'Invalid data'), array('HTTP/1.1 400 Bad Request'));
+                return;
+            }
+
             try {
                 $userModel = new UserModel();
                 $user = $userModel->getUser($username);
@@ -211,6 +216,15 @@ class UserController extends BaseController {
             }
             $username = $payload['username'];
             $password = $payload['password'];
+            
+            // username must be alphanumeric and 6-20 characters long
+            if (!preg_match('/^[a-zA-Z0-9]{6,20}$/', $username)) {
+                $this->responseWriter(array('error' => 'Invalid username'), array('HTTP/1.1 400 Bad Request'));
+                return;
+            } else if (!preg_match('/^[a-zA-Z0-9]{6,20}$/', $password)) {
+                $this->responseWriter(array('error' => 'Invalid password'), array('HTTP/1.1 400 Bad Request'));
+                return;
+            }
 
             try {
                 $userModel = new UserModel();
@@ -275,6 +289,8 @@ class UserController extends BaseController {
             }
         }
     }
+
+
 
     /* Get user info
      * GET /users/info
@@ -429,5 +445,38 @@ class UserController extends BaseController {
    
     private function bverify($password, $hash) {
         return password_verify($password, $hash);
+    }
+
+    private function validateUserData($data) {
+        // username must be alphanumeric and between 6-20 characters
+        if (!preg_match('/^[a-zA-Z0-9]{6,20}$/', $data['username'])) {
+            return false;
+        }
+        // password must be alphanumeric and between 6-20 characters
+        if (!preg_match('/^[a-zA-Z0-9]{6,20}$/', $data['password'])) {
+            return false;
+        }
+        // email must be valid
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+        // phone must be valid
+        if (!preg_match('/^[0-9]{12}$/', $data['phone'])) {
+            return false;
+        }
+        // last name must be alphanumeric and between 2-20 characters
+        if (!preg_match('/^[a-zA-Z0-9]{2,20}$/', $data['lname'])) {
+            return false;
+        }
+        // first name must be alphanumeric and between 2-20 characters
+        if (!preg_match('/^[a-zA-Z0-9]{2,20}$/', $data['fname'])) {
+            return false;
+        }
+        // year of birth must be valid
+        if (!preg_match('/^[0-9]{4}$/', $data['yob'])) {
+            return false;
+        }
+        return true;
+
     }
 }

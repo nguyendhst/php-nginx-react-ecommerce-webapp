@@ -132,9 +132,6 @@ function DashBoard() {
                     <Nav.Item>
                         <Nav.Link eventKey="users">Users</Nav.Link>
                     </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="news">News</Nav.Link>
-                    </Nav.Item>
                 </Nav>
                 <Table>
                     <thead>

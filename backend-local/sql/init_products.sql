@@ -48,8 +48,8 @@ INSERT INTO `products` (`id`, `name`, `category`, `price`, `status`, `main_image
   (12, 'Cáp sạc nhanh 3 đầu Velasboost 66W', 'Cable', 149000, 'in_stock', 13, 'Cáp sạc nhanh 3 đầu Velasboost 66W'),
   (13, 'Cáp USB C to USB C USB 3.2 100W', 'Cable', 350000, 'in_stock', 14, 'Cáp C to C chuyên dụng cho sạc iPad, Macbook và các thiết bị Android, sạc nhanh, truyền dữ liệu nhanh gấp 42 lần chuẩn USB 2.0 thông thường, truyền hình ảnh từ Macbook ra màn hình lớn.'),
   (14, 'Pin dự phòng Dynamic 2 - 20.000 mAh 20W', 'Powerbank', 599000, 'in_stock', 15, 'Pin dự phòng 20.000 mAh sử dụng lõi pin Panasonic, sử dụng trong xe Telas Model 3, 74Wh'),
-  (15, 'Ghế công thái học Black Velas', 'Lifestyle', 3500000, 'out_of_stock', 16, 'Ghế công thái học, phiên bản hợp tác giữa Velasboost và HyperWork');
-
+  (15, 'Ghế công thái học Black Velas', 'Lifestyle', 3500000, 'out_of_stock', 16, 'Ghế công thái học, phiên bản hợp tác giữa Velasboost và HyperWork')
+  (16, 'Sạc nhanh 33W 2 cổng N33 - 2 ports', 'Charger', 299000, 'in_stock', 17, 'Mẫu sạc nhanh 33W kích thước nhỏ, hỗ trợ QC, PD, PPS');
 
 
 INSERT INTO `image_links` (`link_id`, `product_id`, `link`) VALUES 
@@ -68,7 +68,7 @@ INSERT INTO `image_links` (`link_id`, `product_id`, `link`) VALUES
   (13, 12, 'https://product.hstatic.net/200000384841/product/mau_ghi_e3de701ab52c4c9a91682b6e4e7ef44a_master.jpg'),
   (14, 13, 'https://product.hstatic.net/200000384841/product/20w__45__7b68c570a3fd45f7af8475b736fcd4f3_master.png'),
   (15, 14, 'https://product.hstatic.net/200000384841/product/thiet_ke_chua_co_ten__16__0109ae4563c34deeb857f09cd446c0d9_master.png'),
-  (16, 15, 'https://product.hstatic.net/200000384841/product/thiet_ke_khong_ten__1__8068865e7de7428b955fa66d421a60eb_master.png');
-
+  (16, 15, 'https://product.hstatic.net/200000384841/product/thiet_ke_khong_ten__1__8068865e7de7428b955fa66d421a60eb_master.png'),
+  (17, 16, 'https://product.hstatic.net/200000384841/product/thiet_ke_chua_co_ten_29de2d5108e14793af662ec17b41cf17_master.png');
 
 SET FOREIGN_KEY_CHECKS=1;

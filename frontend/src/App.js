@@ -12,6 +12,8 @@ import NotFound from "./pages/404";
 import Users from "./pages/Users";
 import Login from "./pages/Users/Login";
 import Register from "./pages/Users/Register";
+import Product from "./pages/Product";
+
 
 import AuthServices from "./services/auth.service";
 
@@ -26,6 +28,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="products/*" element={<Products />} />
+                    <Route path="products/item/:id" element={<Product />} />
                     <Route path="users" element={<Users />} />
                     <Route path="users/login" element={<Login />} />
                     <Route path="users/register" element={<Register />} />

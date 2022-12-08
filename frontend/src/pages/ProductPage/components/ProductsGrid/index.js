@@ -91,20 +91,34 @@ function ProductsGrid(props) {
                             {products.map((product) => {
                                 return (
                                     <Col md={3} key={product.id}>
-                                        <Card className="product-card">
-                                            <Card.Img
-                                                variant="top"
-                                                src={getMainImage(product.id)}
-                                            />
-                                            <Card.Body>
-                                                <Card.Title>
-                                                    {product.name}
-                                                </Card.Title>
-                                                <Card.Text>
-                                                    {intToVND(product.price)}
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
+                                        <a
+                                            href={`/products/item/${product.id}`}
+                                            id="product-link"
+                                        >
+                                            <Card className="product-card">
+                                                <Card.Img
+                                                    variant="top"
+                                                    src={getMainImage(
+                                                        product.id
+                                                    )}
+                                                />
+                                                <Card.Body>
+                                                    <Card.Title
+                                                        style={{
+                                                            "marginBottom":
+                                                                "10px",
+                                                        }}
+                                                    >
+                                                        {product.name}
+                                                    </Card.Title>
+                                                    <Card.Text>
+                                                        {intToVND(
+                                                            product.price
+                                                        )}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </a>
                                     </Col>
                                 );
                             })}

@@ -10,6 +10,15 @@ class ProductModel extends ProductDatabase {
         return $this->select($query, $params);
     }
 
+    public function getProductByID($id) {
+        $query = "SELECT * FROM products WHERE id = ?;";
+        $params = [
+            "i",
+            $id
+        ];
+        return $this->select($query, $params);
+    }
+
     public function getProducts($limit, $offset, $category) {
         
         if ($category != '') {

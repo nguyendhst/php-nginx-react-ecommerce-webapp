@@ -6,6 +6,8 @@ import { Link, Navigate } from "react-router-dom";
 
 import AuthServices from "../../../services/auth.service";
 
+import "./style.css";
+
 const login = (e) => {
     e.preventDefault();
     // Get username and password
@@ -43,7 +45,7 @@ function Login() {
 
     return (
         // Login form
-        <div>
+        <div className="login-wrapper">
             <Container>
                 <Row className="vh-100 d-flex justify-content-center align-items-center">
                     <Col md={8} lg={6} xs={12}>

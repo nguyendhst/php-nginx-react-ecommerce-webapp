@@ -26,6 +26,7 @@ if ($method == "OPTIONS") {
     * GET /api/products/list?limit=[]&offset=[]&category=[]
     * GET /api/products/images?id=[]
     * GET /api/products/mainimage?id=[]
+    * GET /api/products/item?id=[]
     * 
     * GET  /api/users/info
     * POST /api/users/login
@@ -49,6 +50,7 @@ $actions = [
     'register' => 'createAccountAction',
     'info' => 'getUserInfoAction',
     'admin' => 'createAdminAction',
+    'item' => 'itemAction',
 ];
 
 // redirect

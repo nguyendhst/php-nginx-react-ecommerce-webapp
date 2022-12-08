@@ -76,6 +76,63 @@ class ProductController extends BaseController {
         }
     }
 
+    /**
+     * GET /products/item?id=[]
+     * @return array
+     */
+
+    public function itemAction() {
+            
+        // error response
+        $errStr ='';
+        $errHeader ='';
+
+        // get method
+        $method = $_SERVER['REQUEST_METHOD'];
+        // get query params
+        $queryParams = $this->getQueryParams();
+        if (strtoupper($method) !== 'GET') {
+            $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
+            return;
+        } else {
+            try {
+                $productModel = new ProductModel();
+
+                if (isset($queryParams['id']) && is_numeric($queryParams['id']) && $queryParams['id'] >= 0) {
+                    $id = $queryParams['id'];
+                } else {
+                    $id = 0;
+                }
+
+                $product = $productModel->getProductByID($id);
+                $res = json_encode($product, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+
+            // response
+            if ($errStr) {
+                $this->responseWriter(
+                    json_encode(array('itemAction_error' => $errStr)), 
+                    array(
+                        $errHeader,
+                        'Content-Type: application/json'
+                    )
+                );
+
+            } else {
+                $this->responseWriter(
+                    $res,
+                    array(
+                        'HTTP/1.1 200 OK',
+                        'Content-Type: application/json'
+                    )
+                );
+            }
+        } 
+    }
+
 
     /**
      * Get products images links
