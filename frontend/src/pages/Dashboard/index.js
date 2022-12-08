@@ -1,15 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import {
-    Card,
-    Col,
-    Container,
-    Row,
-    Table,
-    Nav,
-    Tab,
-    Tabs,
-} from "react-bootstrap";
+import { Container, Table, Nav, Pagination } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
 
@@ -35,6 +26,9 @@ function DashBoard() {
     const [currentTab, setCurrentTab] = useState("products");
     const [data, setData] = useState([]);
     const [columns, setColumns] = useState(productsCols);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         const user = JSON.parse(AuthServices.getCurrentUser());
@@ -70,7 +64,10 @@ function DashBoard() {
             setData(JSON.parse(data));
             setLoading(false);
         };
-        fetchData();
+        fetchData().then(() => {
+            // set toal pages
+            setTotalPages(Math.ceil(data.length / itemsPerPage));
+        });
 
         if (currentTab === "products") {
             setColumns(productsCols);
@@ -123,10 +120,7 @@ function DashBoard() {
                         <Nav.Link eventKey="users">Users</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey="orders">Admin</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="orders">News</Nav.Link>
+                        <Nav.Link eventKey="news">News</Nav.Link>
                     </Nav.Item>
                 </Nav>
                 <Table>
@@ -166,6 +160,42 @@ function DashBoard() {
                         ))}
                     </tbody>
                 </Table>
+                <Pagination>
+                    <Pagination.First
+                        active={currentPage === 1}
+                        onClick={() => {
+                            setCurrentPage(1);
+                        }}
+                    />
+                    <Pagination.Prev
+                        active={currentPage !== 1}
+                        onClick={() => {
+                            setCurrentPage(currentPage - 1);
+                        }}
+                    />
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <Pagination.Item
+                            active={i + 1 === currentPage}
+                            onClick={() => {
+                                setCurrentPage(i + 1);
+                            }}
+                        >
+                            {i + 1}
+                        </Pagination.Item>
+                    ))}
+                    <Pagination.Next
+                        active={currentPage !== totalPages}
+                        onClick={() => {
+                            setCurrentPage(currentPage + 1);
+                        }}
+                    />
+                    <Pagination.Last
+                        active={currentPage === totalPages}
+                        onClick={() => {
+                            setCurrentPage(totalPages);
+                        }}
+                    />
+                </Pagination>
             </Container>
         </div>
     );
