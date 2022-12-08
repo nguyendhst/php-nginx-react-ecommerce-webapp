@@ -31,6 +31,28 @@ class UserController extends BaseController {
             $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
             return;
         } else {
+            // check admin privilege
+            if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+                $this->responseWriter(array('error' => 'Authorization header not found'), array('HTTP/1.1 401 Unauthorized'));
+                return;
+            }
+            if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
+                $this->responseWriter(array('error' => 'Authorization header not found'), array('HTTP/1.1 401 Unauthorized'));
+                return;
+            }
+            $jwt = $matches[1];
+            try {
+                $decoded = JWT::decode($jwt, new Key(JWT_SECRET, 'HS256'));
+                if ($decoded->data->role !== 'Admin') {
+                    $this->responseWriter(array('error' => 'Unauthorized'), array('HTTP/1.1 401 Unauthorized'), array('dump' => $decoded));
+                    return;
+                }
+            } catch (Exception $e) {
+                $this->responseWriter(
+                    array('error' => 'Unauthorized', 'dump' => $e->getMessage()), 
+                    array('HTTP/1.1 401 Unauthorized'));
+                return;
+            }
             try {
                 $userModel = new UserModel();
                 $defaultLimit = 10;
@@ -121,7 +143,7 @@ class UserController extends BaseController {
                 "phone" => $phone,
                 "email" => $email,
                 "username" => $username,
-                "password_hash" => password_hash($password, PASSWORD_DEFAULT),
+                "password_hash" => $this->bhash($password),
                 "yob" => $yob
             ];
 
@@ -273,6 +295,10 @@ class UserController extends BaseController {
             $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
             return;
         } else {
+            if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+                $this->responseWriter(array('error' => 'Authorization header not found'), array('HTTP/1.1 401 Unauthorized'));
+                return;
+            }
             // check if authorization header is set
             if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
                 $this->responseWriter(array('error' => 'Authorization header not found'), array('HTTP/1.1 401 Unauthorized'));
@@ -293,6 +319,85 @@ class UserController extends BaseController {
             if ($errStr) {
                 $this->responseWriter(
                     json_encode(array('getUserInfoAction_error' => $errStr)), 
+                    array(
+                        $errHeader,
+                        'Content-Type: application/json'
+                    )
+                );
+            } else {
+                $this->responseWriter(
+                    $res,
+                    array(
+                        'Content-Type: application/json'
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Create Admin user
+     * POST /users/admin
+     * @return array
+     */
+
+    public function createAdminAction() {
+
+        // error response
+        $errStr ='';
+        $errHeader ='';
+
+        // get method
+        $method = $_SERVER['REQUEST_METHOD'];
+        // get query params
+        $queryParams = $this->getQueryParams();
+        if (strtoupper($method) !== 'POST') {
+            $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
+            return;
+        } else {
+            try {
+                $payload = json_decode(file_get_contents('php://input'), true);
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 400 Bad Request';
+            }
+            $username = $payload['username'];
+            $password = $payload['password'];
+            $role = "Admin";
+            $lname = $payload['lname'];
+            $fname = $payload['fname'];
+            $email = $payload['email'];
+            $phone = $payload['phone'];
+            $yob = $payload['yob'];
+            $data = array(
+                'username' => $username,
+                'password_hash' => $this->bhash($password),
+                'role' => $role,
+                'lname' => $lname,
+                'fname' => $fname,
+                'email' => $email,
+                'phone' => $phone,
+                'yob' => $yob
+            );
+
+            try {
+                $userModel = new UserModel();
+                $user = $userModel->getUser($username);
+                if (count($user) > 0) {
+                    $this->responseWriter(array('error' => 'User already exists'), array('HTTP/1.1 409 Conflict'));
+                    return;
+                }
+                $userModel->createUser($data);
+                $res = json_encode(array('success' => 'User created'));
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+
+            // response
+            if ($errStr) {
+                $this->responseWriter(
+                    json_encode(array('createAdminAction_error' => $errStr)), 
                     array(
                         $errHeader,
                         'Content-Type: application/json'

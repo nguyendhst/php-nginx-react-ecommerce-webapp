@@ -46,6 +46,7 @@ $actions = [
     'login' => 'loginAction',
     'register' => 'createAccountAction',
     'info' => 'getUserInfoAction',
+    'admin' => 'createAdminAction',
 ];
 
 // redirect
