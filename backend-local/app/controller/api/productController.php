@@ -38,13 +38,16 @@ class ProductController extends BaseController {
                     $offset = 0;
                 }
 
-                if (isset($queryParams['category']) && is_string($queryParams['category']) && $queryParams['category'] >= 0) {
+                if (isset($queryParams['category']) && is_string($queryParams['category'])) {
                     $category = $queryParams['category'];
                 } else {
                     $category = '';
                 }
-
-                $products = $productModel->getProducts($limit, $offset, $category);
+                if (!isset($queryParams['category']) && !isset($queryParams['limit']) && !isset($queryParams['offset'])) {
+                    $products = $productModel->getAllProducts();
+                } else {
+                    $products = $productModel->getProducts($limit, $offset, $category);
+                }
                 $res = json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             } catch (Exception $e) {
                 $errStr = $e->getMessage();
@@ -189,5 +192,4 @@ class ProductController extends BaseController {
             }
         } 
     }
-
 }

@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `Users`;
 CREATE TABLE `Users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `role` ENUM ('Admin', 'Customer'),

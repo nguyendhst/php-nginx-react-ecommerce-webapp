@@ -1,3 +1,6 @@
+SET FOREIGN_KEY_CHECKS=0;
+
+DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -10,6 +13,7 @@ CREATE TABLE `products` (
   `last_modified` datetime DEFAULT (now())
 );
 
+DROP TABLE IF EXISTS `image_links`;
 CREATE TABLE `image_links` (
   `link_id` int PRIMARY KEY AUTO_INCREMENT,
   `product_id` int,
@@ -20,21 +24,17 @@ CREATE INDEX `product_status` ON `products` (`status`);
 
 CREATE UNIQUE INDEX `products_index_1` ON `products` (`id`);
 
-CREATE UNIQUE INDEX `product_specs_index_2` ON `product_specs` (`id`);
-
 CREATE UNIQUE INDEX `image_links_index_3` ON `image_links` (`link_id`);
 
 ALTER TABLE  `products` ADD FOREIGN KEY (`main_image`) REFERENCES `image_links` (`link_id`)  ;
 
 ALTER TABLE `image_links` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
-ALTER TABLE `product_specs` ADD FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 
-SET FOREIGN_KEY_CHECKS=0;
 
 INSERT INTO `products` (`id`, `name`, `category`, `price`, `status`, `main_image`, `desc`) VALUES 
-  (1, 'Pin dự phòng sạc nhanh 20.000mAh Velasboost F2', 'Charger', 499000, 'in_stock', 1, 'Pin dự phòng sạc nhanh 20.000mAh Velasboost F2'),
+  (1, 'Pin dự phòng sạc nhanh 20.000mAh Velasboost F2', 'Powerbank', 499000, 'in_stock', 1, 'Pin dự phòng sạc nhanh 20.000mAh Velasboost F2'),
   (2, 'Combo Sạc & Cáp 20W (Củ 20w-C, Cáp PD SS1)', 'Charger', 399000, 'out_of_stock', 3, 'Bộ sạc nhanh 20W đầu tiên của Việt Nam đạt chuẩn MFi của Apple'),
   (3, 'Sạc nhanh 130w Velasboost', 'Charger', 1350000, 'in_stock', 4, 'Sạc nhanh đa cổng công suất cao nhất Việt Nam thời điểm hiện tại'),
   (4, 'Sạc 2 cổng 12W Velasboost', 'Charger', 139000, 'out_of_stock', 5, 'Mẫu sạc đa dụng 2 cổng, công suất 12W'),
@@ -47,7 +47,7 @@ INSERT INTO `products` (`id`, `name`, `category`, `price`, `status`, `main_image
   (11, 'Cáp 4 in 1 velasX', 'Cable', 149000, 'in_stock', 12, 'Mẫu cáp đa năng 4 in 1 dành cho nhiều thiết bị'),
   (12, 'Cáp sạc nhanh 3 đầu Velasboost 66W', 'Cable', 149000, 'in_stock', 13, 'Cáp sạc nhanh 3 đầu Velasboost 66W'),
   (13, 'Cáp USB C to USB C USB 3.2 100W', 'Cable', 350000, 'in_stock', 14, 'Cáp C to C chuyên dụng cho sạc iPad, Macbook và các thiết bị Android, sạc nhanh, truyền dữ liệu nhanh gấp 42 lần chuẩn USB 2.0 thông thường, truyền hình ảnh từ Macbook ra màn hình lớn.'),
-  (14, 'Pin dự phòng Dynamic 2 - 20.000 mAh 20W', 'Power Bank', 599000, 'in_stock', 15, 'Pin dự phòng 20.000 mAh sử dụng lõi pin Panasonic, sử dụng trong xe Telas Model 3, 74Wh'),
+  (14, 'Pin dự phòng Dynamic 2 - 20.000 mAh 20W', 'Powerbank', 599000, 'in_stock', 15, 'Pin dự phòng 20.000 mAh sử dụng lõi pin Panasonic, sử dụng trong xe Telas Model 3, 74Wh'),
   (15, 'Ghế công thái học Black Velas', 'Lifestyle', 3500000, 'out_of_stock', 16, 'Ghế công thái học, phiên bản hợp tác giữa Velasboost và HyperWork');
 
 

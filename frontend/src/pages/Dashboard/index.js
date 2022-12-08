@@ -25,6 +25,7 @@ function DashBoard() {
     const [loading, setLoading] = useState(true);
     const [currentTab, setCurrentTab] = useState("products");
     const [data, setData] = useState([]);
+    const [pageData, setPageData] = useState([]);
     const [columns, setColumns] = useState(productsCols);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -62,18 +63,18 @@ function DashBoard() {
             const data = await response.json();
             console.log(data);
             setData(JSON.parse(data));
+            setPageData(JSON.parse(data).slice(0, itemsPerPage));
+            setTotalPages(Math.ceil(JSON.parse(data).length / itemsPerPage));
+
             setLoading(false);
         };
         fetchData().then(() => {
-            // set toal pages
-            setTotalPages(Math.ceil(data.length / itemsPerPage));
+            if (currentTab === "products") {
+                setColumns(productsCols);
+            } else {
+                setColumns(userCols);
+            }
         });
-
-        if (currentTab === "products") {
-            setColumns(productsCols);
-        } else {
-            setColumns(userCols);
-        }
     }, []);
 
     useEffect(() => {
@@ -84,7 +85,7 @@ function DashBoard() {
                 Authorization: `Bearer ${user.token}`,
             };
             const response = await fetch(
-                `http://localhost:8080/api/${currentTab}/list`,
+                `http://localhost:8080/api/${currentTab}/list/all`,
                 {
                     method: "GET",
                     headers: headers,
@@ -93,6 +94,8 @@ function DashBoard() {
             const data = await response.json();
             console.log(data);
             setData(JSON.parse(data));
+            setPageData(JSON.parse(data).slice(0, itemsPerPage));
+            setTotalPages(Math.ceil(JSON.parse(data).length / itemsPerPage));
             setLoading(false);
         };
         fetchData().then(() => {
@@ -103,6 +106,16 @@ function DashBoard() {
             }
         });
     }, [currentTab]);
+
+    useEffect(() => {
+        console.log("page changed");
+        setPageData(
+            data.slice(
+                (currentPage - 1) * itemsPerPage,
+                currentPage * itemsPerPage
+            )
+        );
+    }, [currentPage]);
 
     return (
         <div>
@@ -133,10 +146,10 @@ function DashBoard() {
                         </tr>
                     </thead>
                     <tbody>
-                        {Object.keys(data).map((key) => (
+                        {Object.keys(pageData).map((key) => (
                             <tr>
                                 {columns.map((col) => (
-                                    <td>{data[key][col]}</td>
+                                    <td>{pageData[key][col]}</td>
                                 ))}
                                 <td>
                                     <button
@@ -162,35 +175,34 @@ function DashBoard() {
                 </Table>
                 <Pagination>
                     <Pagination.First
-                        active={currentPage === 1}
                         onClick={() => {
                             setCurrentPage(1);
                         }}
                     />
                     <Pagination.Prev
-                        active={currentPage !== 1}
                         onClick={() => {
-                            setCurrentPage(currentPage - 1);
+                            if (currentPage > 1) {
+                                setCurrentPage(currentPage - 1);
+                            }
                         }}
                     />
-                    {Array.from({ length: totalPages }, (_, i) => (
+                    {Array.from(Array(totalPages).keys()).map((page) => (
                         <Pagination.Item
-                            active={i + 1 === currentPage}
                             onClick={() => {
-                                setCurrentPage(i + 1);
+                                setCurrentPage(page + 1);
                             }}
                         >
-                            {i + 1}
+                            {page + 1}
                         </Pagination.Item>
                     ))}
                     <Pagination.Next
-                        active={currentPage !== totalPages}
                         onClick={() => {
-                            setCurrentPage(currentPage + 1);
+                            if (currentPage < totalPages) {
+                                setCurrentPage(currentPage + 1);
+                            }
                         }}
                     />
                     <Pagination.Last
-                        active={currentPage === totalPages}
                         onClick={() => {
                             setCurrentPage(totalPages);
                         }}

@@ -10,13 +10,24 @@ class ProductModel extends ProductDatabase {
         return $this->select($query, $params);
     }
 
-    public function getProducts($limit, $offset) {
-        $query = "SELECT * FROM products LIMIT ? OFFSET ?;";
-        $params = [
-            "ii",
-            $limit,
-            $offset
-        ];
+    public function getProducts($limit, $offset, $category) {
+        
+        if ($category != '') {
+            $query = "SELECT * FROM products WHERE category LIKE ? LIMIT ? OFFSET ?;";
+            $params = [
+                "sii",
+                $category,
+                $limit,
+                $offset
+            ];
+        } else {
+            $query = "SELECT * FROM products LIMIT ? OFFSET ?;";
+            $params = [
+                "ii",
+                $limit,
+                $offset
+            ];
+        }
         return $this->select($query, $params);
     }
 

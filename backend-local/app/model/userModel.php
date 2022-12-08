@@ -3,6 +3,12 @@
 require_once PROJECT_ROOT . "/model/database.php";
 
 class UserModel extends AccountDatabase {
+
+    public function getAllUsers() {
+        $query = "SELECT `role`, `lname`, `fname`, `phone`, `email`, `yob`, `username` FROM `Users`;";
+        $params = [];
+        return $this->select($query, $params);
+    }
     
     public function getUser($username) {
         $query = "SELECT `role`, `lname`, `fname`, `phone`, `email`, `yob`, `username`, `password_hash` FROM `Users` WHERE `username` = ?;";
