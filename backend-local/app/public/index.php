@@ -30,6 +30,8 @@ if ($method == "OPTIONS") {
     * GET  /api/users/info
     * POST /api/users/login
     * POST /api/users/register
+    * GET  /api/users/list?limit=[]&offset=[]&role=[]
+    * POST /api/users/admin
     *  
 */
 
