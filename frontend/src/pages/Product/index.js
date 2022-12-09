@@ -4,13 +4,10 @@ import { useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
-import { Container, Row, Col } from "react-bootstrap";
 import "./style.css";
 
 const API = "http://127.0.0.1:8080/api/products/item";
 const productMainImageAPI = "http://127.0.0.1:8080/api/products/mainimage";
-
-
 
 function intToVND(price) {
     return price.toLocaleString("vi-VN", {
@@ -54,8 +51,6 @@ function Product() {
 
     return (
         <div className="single-product-main">
-           
-
             <section class="section" id="product">
                 <div class="container">
                     <div class="row">
@@ -72,7 +67,11 @@ function Product() {
                             <div class="product-details">
                                 <h3>{product.name}</h3>
                                 <div class="price">
-                                    <h4>{product.price ? intToVND(product.price) : 0}</h4>
+                                    <h4>
+                                        {product.price
+                                            ? intToVND(product.price)
+                                            : 0}
+                                    </h4>
 
                                     <div class="description">
                                         <p>{product.desc}</p>

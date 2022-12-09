@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import AuthServices from "../../../services/auth.service";
 

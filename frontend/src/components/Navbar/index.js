@@ -1,6 +1,4 @@
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
-import { NavLink } from "react-bootstrap";
-import logo from "../../assets/images/logo.png";
 import "./index.css";
 import AuthServices from "../../services/auth.service";
 

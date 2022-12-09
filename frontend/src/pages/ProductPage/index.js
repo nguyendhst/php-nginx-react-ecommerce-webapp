@@ -1,7 +1,5 @@
-// ProductPage is the page that displays the product details
 
-import React, { useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import React from "react";
 
 import NotFound from "../404";
 import CategoryBanner from "./components/Banner";
