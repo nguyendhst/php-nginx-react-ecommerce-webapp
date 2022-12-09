@@ -11,8 +11,8 @@ import AuthServices from "../../../services/auth.service";
 const registerAPI = "http://localhost:8080/api/users/register";
 
 function validateData(body) {
-    //username must be alphanumeric and between 6-20 characters
-    if (!body.username.match(/^[a-zA-Z0-9]{6,20}$/)) {
+    //username must be alphanumeric and between 5-20 characters
+    if (!body.username.match(/^[a-zA-Z0-9]{5,20}$/)) {
         alert("Username must be alphanumeric and between 6-20 characters");
         return false;
     }

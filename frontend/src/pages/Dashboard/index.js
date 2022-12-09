@@ -11,6 +11,7 @@ const productsCols = [
     "name",
     "category",
     "price",
+    "desc", 
     // "main_image",
     // "category",
     // "images",

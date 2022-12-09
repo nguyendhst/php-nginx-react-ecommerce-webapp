@@ -217,11 +217,11 @@ class UserController extends BaseController {
             $username = $payload['username'];
             $password = $payload['password'];
             
-            // username must be alphanumeric and 6-20 characters long
-            if (!preg_match('/^[a-zA-Z0-9]{6,20}$/', $username)) {
+            // username must be alphanumeric and 5-20 characters long
+            if (!preg_match('/^[a-zA-Z0-9]{5,20}$/', $username)) {
                 $this->responseWriter(array('error' => 'Invalid username'), array('HTTP/1.1 400 Bad Request'));
                 return;
-            } else if (!preg_match('/^[a-zA-Z0-9]{6,20}$/', $password)) {
+            } else if (!preg_match('/^[a-zA-Z0-9]{5,20}$/', $password)) {
                 $this->responseWriter(array('error' => 'Invalid password'), array('HTTP/1.1 400 Bad Request'));
                 return;
             }
@@ -447,13 +447,13 @@ class UserController extends BaseController {
         return password_verify($password, $hash);
     }
 
-    private function validateUserData($data) {
-        // username must be alphanumeric and between 6-20 characters
-        if (!preg_match('/^[a-zA-Z0-9]{6,20}$/', $data['username'])) {
+    public function validateUserData($data) {
+        // username must be alphanumeric and between 5-20 characters
+        if (!preg_match('/^[a-zA-Z0-9]{5,20}$/', $data['username'])) {
             return false;
         }
-        // password must be alphanumeric and between 6-20 characters
-        if (!preg_match('/^[a-zA-Z0-9]{6,20}$/', $data['password'])) {
+        // password must be alphanumeric and between 5-20 characters
+        if (!preg_match('/^[a-zA-Z0-9]{5,20}$/', $data['password'])) {
             return false;
         }
         // email must be valid

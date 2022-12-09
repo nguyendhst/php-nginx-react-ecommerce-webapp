@@ -19,7 +19,8 @@ import AuthServices from "./services/auth.service";
 
 function App() {
     // Check if user is logged in
-    const user = JSON.parse(AuthServices.getCurrentUser());
+    
+    const user = AuthServices.getCurrentUser()
     console.log("logged in as: ", user);
     return (
         <React.Fragment>
