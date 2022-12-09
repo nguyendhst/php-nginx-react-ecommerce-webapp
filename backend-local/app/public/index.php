@@ -11,17 +11,29 @@ require PROJECT_ROOT . '/controller/api/userController.php';
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+header('Content-Type: application/json');
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method == "OPTIONS") {
+    header('Access-Control-Allow-Origin: *');
+    header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
+    header("HTTP/1.1 200 OK");
+    die();
+}
 
 /* All routes:
     * GET /api/products/list
     * GET /api/products/list?limit=[]&offset=[]&category=[]
     * GET /api/products/images?id=[]
     * GET /api/products/mainimage?id=[]
+    * GET /api/products/item?id=[]
     * 
     * GET  /api/users/info
     * POST /api/users/login
     * POST /api/users/register
-    * 
+    * GET  /api/users/list?limit=[]&offset=[]&role=[]
+    * POST /api/users/admin
+    *  
 */
 
 
@@ -37,6 +49,8 @@ $actions = [
     'login' => 'loginAction',
     'register' => 'createAccountAction',
     'info' => 'getUserInfoAction',
+    'admin' => 'createAdminAction',
+    'item' => 'itemAction',
 ];
 
 // redirect

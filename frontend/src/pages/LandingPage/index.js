@@ -10,6 +10,8 @@ function Home() {
 
       <HomeCategory />
 
+      
+
     </React.Fragment>
   );
 }

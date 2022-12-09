@@ -12,8 +12,15 @@ import NotFound from "./pages/404";
 import Users from "./pages/Users";
 import Login from "./pages/Users/Login";
 import Register from "./pages/Users/Register";
+import Product from "./pages/Product";
+
+
+import AuthServices from "./services/auth.service";
 
 function App() {
+    // Check if user is logged in
+    const user = JSON.parse(AuthServices.getCurrentUser());
+    console.log("logged in as: ", user);
     return (
         <React.Fragment>
             <Header />
@@ -21,15 +28,15 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="products/*" element={<Products />} />
+                    <Route path="products/item/:id" element={<Product />} />
                     <Route path="users" element={<Users />} />
                     <Route path="users/login" element={<Login />} />
                     <Route path="users/register" element={<Register />} />
-                    <Route path="admin/*" element={<DashBoard />} />
-
+                    <Route path="dashboard" element={<DashBoard />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>
-            <Footer></Footer>
+            <Footer />
         </React.Fragment>
     );
 }

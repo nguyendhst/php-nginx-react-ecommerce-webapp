@@ -1,9 +1,8 @@
-/* create the accounts database */
-/* charset unicode */
 CREATE DATABASE IF NOT EXISTS `btl_accounts` DEFAULT CHARACTER SET utf16 COLLATE utf16_general_ci;
 
 USE `btl_accounts`;
 
+DROP TABLE IF EXISTS `Users`;
 CREATE TABLE `Users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `role` ENUM ('Admin', 'Customer'),

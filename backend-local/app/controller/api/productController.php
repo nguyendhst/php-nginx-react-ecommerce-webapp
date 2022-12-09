@@ -38,13 +38,16 @@ class ProductController extends BaseController {
                     $offset = 0;
                 }
 
-                if (isset($queryParams['category']) && is_string($queryParams['category']) && $queryParams['category'] >= 0) {
+                if (isset($queryParams['category']) && is_string($queryParams['category'])) {
                     $category = $queryParams['category'];
                 } else {
                     $category = '';
                 }
-
-                $products = $productModel->getProducts($limit, $offset, $category);
+                if (!isset($queryParams['category']) && !isset($queryParams['limit']) && !isset($queryParams['offset'])) {
+                    $products = $productModel->getAllProducts();
+                } else {
+                    $products = $productModel->getProducts($limit, $offset, $category);
+                }
                 $res = json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             } catch (Exception $e) {
                 $errStr = $e->getMessage();
@@ -71,6 +74,63 @@ class ProductController extends BaseController {
                 );
             }
         }
+    }
+
+    /**
+     * GET /products/item?id=[]
+     * @return array
+     */
+
+    public function itemAction() {
+            
+        // error response
+        $errStr ='';
+        $errHeader ='';
+
+        // get method
+        $method = $_SERVER['REQUEST_METHOD'];
+        // get query params
+        $queryParams = $this->getQueryParams();
+        if (strtoupper($method) !== 'GET') {
+            $this->responseWriter(array('error' => 'Method not allowed'), array('HTTP/1.1 405 Method Not Allowed'));
+            return;
+        } else {
+            try {
+                $productModel = new ProductModel();
+
+                if (isset($queryParams['id']) && is_numeric($queryParams['id']) && $queryParams['id'] >= 0) {
+                    $id = $queryParams['id'];
+                } else {
+                    $id = 0;
+                }
+
+                $product = $productModel->getProductByID($id);
+                $res = json_encode($product, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            } catch (Exception $e) {
+                $errStr = $e->getMessage();
+                $errHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+
+            // response
+            if ($errStr) {
+                $this->responseWriter(
+                    json_encode(array('itemAction_error' => $errStr)), 
+                    array(
+                        $errHeader,
+                        'Content-Type: application/json'
+                    )
+                );
+
+            } else {
+                $this->responseWriter(
+                    $res,
+                    array(
+                        'HTTP/1.1 200 OK',
+                        'Content-Type: application/json'
+                    )
+                );
+            }
+        } 
     }
 
 
@@ -189,5 +249,4 @@ class ProductController extends BaseController {
             }
         } 
     }
-
 }

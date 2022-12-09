@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Card, Container, Row} from "react-bootstrap";
+import { Col, Card, Container, Row } from "react-bootstrap";
 
 import "./index.css";
 
@@ -9,6 +9,7 @@ const productMainImageAPI = "http://127.0.0.1:8080/api/products/mainimage";
 
 const fetchAllProductsInfo = async (cat) => {
     if (cat != "") {
+        console.log("fetching products with category: ", cat);
         const response = await fetch(`${productInfoAPI}?category=${cat}`);
         const data = await response.json();
         const products = JSON.parse(data);
@@ -36,6 +37,13 @@ const fetchProductMainImage = async (id) => {
     return image[0].link;
 };
 
+const intToVND = (price) => {
+    return price.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+    });
+};
+
 function ProductsGrid(props) {
     const { category } = props;
 
@@ -53,20 +61,15 @@ function ProductsGrid(props) {
 
     // map main image to each product
     React.useEffect(() => {
-        products.map((product) => {
-            let arr = [];
-            fetchProductMainImage(product.id)
-                .then((data) => {
-                    let i = {
-                        id: product.id,
-                        link: data,
-                    };
-                    arr.push(i);
-                })
-                .then(() => {
-                    console.log("images:", arr);
-                    setImages(arr);
-                });
+        products.forEach((product) => {
+            fetchProductMainImage(product.id).then((data) => {
+                console.log("image:", data);
+                const image = {
+                    id: product.id,
+                    link: data,
+                };
+                setImages((images) => [...images, image]);
+            });
         });
     }, [products]);
 
@@ -74,8 +77,10 @@ function ProductsGrid(props) {
         let image = images.find((image) => image.id === id);
         if (image) {
             return image.link;
+        } else {
+            console.log("no image found");
         }
-    }
+    };
 
     return (
         <div className="main-content">
@@ -86,20 +91,34 @@ function ProductsGrid(props) {
                             {products.map((product) => {
                                 return (
                                     <Col md={3} key={product.id}>
-                                        <Card className="product-card">
-                                            <Card.Img
-                                                variant="top"
-                                                src={getMainImage(product.id)}
-                                            />
-                                            <Card.Body>
-                                                <Card.Title>
-                                                    {product.name}
-                                                </Card.Title>
-                                                <Card.Text>
-                                                    {product.price}
-                                                </Card.Text>
-                                            </Card.Body>
-                                        </Card>
+                                        <a
+                                            href={`/products/item/${product.id}`}
+                                            id="product-link"
+                                        >
+                                            <Card className="product-card">
+                                                <Card.Img
+                                                    variant="top"
+                                                    src={getMainImage(
+                                                        product.id
+                                                    )}
+                                                />
+                                                <Card.Body>
+                                                    <Card.Title
+                                                        style={{
+                                                            "marginBottom":
+                                                                "10px",
+                                                        }}
+                                                    >
+                                                        {product.name}
+                                                    </Card.Title>
+                                                    <Card.Text>
+                                                        {intToVND(
+                                                            product.price
+                                                        )}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </a>
                                     </Col>
                                 );
                             })}

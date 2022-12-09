@@ -1,43 +1,58 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import {  Col, Button, Row, Container, Card, Form } from "react-bootstrap";
+import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import AuthServices from "../../../services/auth.service";
+
+import "./style.css";
 
 const login = (e) => {
     e.preventDefault();
     // Get username and password
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    console.log(username, password)
+    console.log(username, password);
 
     // Call login service
-    AuthServices.login(username, password).then((response) => {
-        // if user is admin, redirect to admin dashboard
-        if (response.user_info.role === "Admin") {
+    const user = AuthServices.login(username, password);
+    // wait til promise is resolved
+    user.then((data) => {
+        console.log(data);
+        const parsed = JSON.parse(data);
+
+        // if user is admin, redirect to admin page
+        if (parsed.user_info.role === "Admin") {
             window.location.href = "/dashboard";
         } else {
-            // if user is not admin, redirect to home page
             window.location.href = "/";
         }
     });
 };
 
 function Login() {
+    // Check if user is logged in
+    const user = JSON.parse(AuthServices.getCurrentUser());
+    console.log("logged in as: ", user);
+    if (user) {
+        if (user.user_info.role === "Admin") {
+            return <Navigate to="/dashboard" />;
+        } else {
+            return <Navigate to="/" />;
+        }
+    }
+
     return (
         // Login form
-        <div>
+        <div className="login-wrapper">
             <Container>
                 <Row className="vh-100 d-flex justify-content-center align-items-center">
                     <Col md={8} lg={6} xs={12}>
                         <Card className="shadow">
                             <Card.Body>
                                 <div className="mb-3 mt-md-4">
-                                    <h2 className="mb-5">
-                                        Welcome back!
-                                    </h2>
+                                    <h2 className="mb-5">Welcome back!</h2>
                                     <div className="mb-3">
                                         <Form>
                                             <Form.Group
